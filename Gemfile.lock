@@ -38,9 +38,14 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
+    curb (0.8.5)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.2.1)
+    feedjira (1.3.0)
+      curb (~> 0.8.1)
+      loofah (~> 2.0.0)
+      sax-machine (~> 0.2.1)
     hike (1.2.3)
     i18n (0.6.9)
     jbuilder (2.1.1)
@@ -50,12 +55,17 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    loofah (2.0.0)
+      nokogiri (>= 1.5.9)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mini_portile (0.6.0)
     minitest (5.3.5)
     multi_json (1.10.1)
+    nokogiri (1.6.2.1)
+      mini_portile (= 0.6.0)
     pg (0.17.1)
     polyglot (0.3.5)
     rack (1.5.2)
@@ -101,6 +111,8 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+    sax-machine (0.2.1)
+      nokogiri (~> 1.6.0)
     sdoc (0.4.0)
       json (~> 1.8)
       rdoc (~> 4.0, < 5.0)
@@ -134,6 +146,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (~> 3.1.1)
   coffee-rails (~> 4.0.0)
+  feedjira
   jbuilder (~> 2.0)
   jquery-rails
   pg
