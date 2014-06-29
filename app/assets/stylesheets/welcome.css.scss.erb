@@ -33,7 +33,19 @@
 
   h1 {
     .fa {
-      font-size: 4em;
+      background-color: $brand-success;
+      background: #5cb85c; /* Old browsers */
+      background: -moz-linear-gradient(top,  #5cb85c 0%, #3f7f3f 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5cb85c), color-stop(100%,#3f7f3f)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #5cb85c 0%,#3f7f3f 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #5cb85c 0%,#3f7f3f 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #5cb85c 0%,#3f7f3f 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #5cb85c 0%,#3f7f3f 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5cb85c', endColorstr='#3f7f3f',GradientType=0 ); /* IE6-9 */
+      box-shadow: 0 1px 3px rgba(0,0,0,.5);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 2.25em;
     }
   }
 
@@ -104,6 +116,7 @@
     background-color: transparent;
     border-bottom-color: #a9a9a9;
     border-bottom-color: rgba(255,255,255,.25);
+    border-bottom-color: $brand-success;
   }
   .masthead-nav > .active > a,
   .masthead-nav > .active > a:hover,
