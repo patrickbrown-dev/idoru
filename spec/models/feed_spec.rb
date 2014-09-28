@@ -4,11 +4,18 @@ RSpec.describe Feed, :type => :model do
 
   let!(:rss_xml) { File.open("spec/fixtures/rss.xml", "rb").read }
   let(:parser) { double(fetch_and_parse: Feedjira::Feed.parse(rss_xml)) }
+  
+  # Associations -------------------------------------------------------
 
-  # Validations
+  it { should have_many :articles }
+
+  # Validations --------------------------------------------------------
+
   it { should validate_presence_of :title }
   it { should validate_presence_of :url }
 
+  # Instance Methods ---------------------------------------------------
+ 
   describe "#update_meta" do
     it "should update title" do
       feed = Feed.new(title: "foo", url: "https://xkcd.com/rss.xml")

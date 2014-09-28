@@ -1,9 +1,16 @@
 class Feed < ActiveRecord::Base
 
-  # Validations
+  # Associations -------------------------------------------------------
+
+  has_many :articles
+
+  # Validations --------------------------------------------------------
+
   validates_presence_of(:title)
   validates_presence_of(:url)
 
+  # Instance Methods ---------------------------------------------------
+ 
   def update_meta(parser = Feedjira::Feed)
     feed = parser.fetch_and_parse(url)
     self.update_attributes!(title: feed.title)
