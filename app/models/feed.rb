@@ -9,7 +9,7 @@ class Feed < ActiveRecord::Base
     self.update_attributes!(title: feed.title)
   end
 
-  def save_articles
+  def update_articles
     feed = Feedjira::Feed.fetch_and_parse(url)
     
     feed.entries.each do |entry|
