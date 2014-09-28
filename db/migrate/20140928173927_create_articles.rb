@@ -17,8 +17,6 @@ class CreateArticles < ActiveRecord::Migration
   end
 
   def down
-    Article.connection.execute(%{
-      DROP TABLE articles;
-    })
+    Article.connection.execute("DROP TABLE articles;")
   end
 end
