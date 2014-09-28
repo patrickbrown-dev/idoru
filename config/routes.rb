@@ -7,6 +7,6 @@ Rails.application.routes.draw do
         get :refresh
       end
     end
-    resources :articles, except: [:show, :destroy]
+    resources :articles, only: [:index, :show]
   end
 end
