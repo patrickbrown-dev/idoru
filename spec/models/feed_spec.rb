@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Feed, :type => :model do
 
+  # TODO(ptrckbrwn): close file.
   let!(:rss_xml) { File.open("spec/fixtures/rss.xml", "rb").read }
   let(:parser) { double(fetch_and_parse: Feedjira::Feed.parse(rss_xml)) }
   

@@ -1,0 +1,32 @@
+<h1>Feeds</h1>
+
+<%= link_to "New Feed", new_admin_feed_path, class: "btn btn-primary pull-right" %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>title</th>
+      <th>url</th>
+      <th>created_at</th>
+      <th>updated_at</th>
+      <th>actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @feeds.each do |feed| %>
+      <tr>
+        <td><%= feed.id %></td>
+        <td><%= feed.title %></td>
+        <td><%= feed.url %></td>
+        <td><%= feed.created_at %></td>
+        <td><%= feed.updated_at %></td>
+        <td>
+          <%= link_to "edit", edit_admin_feed_path(feed), class: "btn btn-xs btn-default" %>
+          <%= link_to "refresh", refresh_admin_feed_path(feed), class: "btn btn-xs btn-default" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
