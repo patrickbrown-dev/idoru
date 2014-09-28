@@ -30,10 +30,8 @@ class Feed < ActiveRecord::Base
         article.save!
       else
         article.update_attributes!(title: entry.title,
-                                   url: entry.url,
                                    summary: entry.summary,
-                                   updated_at: Time.zone.now,
-                                   feed: self)
+                                   updated_at: Time.zone.now)
       end
 
       self.update_attributes!(updated_at: Time.zone.now)
