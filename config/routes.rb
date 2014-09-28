@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  resources :feeds
-
   root 'welcome#index'
 
   resources :articles
+  resources :feeds
 end
