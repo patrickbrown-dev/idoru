@@ -25,12 +25,14 @@ class Feed < ActiveRecord::Base
       if article.nil?
         article = Article.new(title: entry.title,
                               url: entry.url,
-                              summary: entry.summary)
+                              summary: entry.summary,
+                              feed: self)
         article.save!
       else
         article.update_attributes!(title: entry.title,
                                    url: entry.url,
-                                   summary: entry.summary)
+                                   summary: entry.summary,
+                                   feed: self)
       end
     end
   end
