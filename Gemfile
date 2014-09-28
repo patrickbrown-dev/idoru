@@ -25,8 +25,12 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'spring'
   gem 'shoulda'
+end
+
+group :development do
+  gem 'awesome_print'
+  gem 'pry'
 end
 
 # Use ActiveModel has_secure_password
