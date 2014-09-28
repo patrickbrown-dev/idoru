@@ -21,7 +21,20 @@ RSpec.describe Feed, :type => :model do
     it "should update title" do
       feed = Feed.new(title: "foo", url: "https://xkcd.com/rss.xml")
       feed.update_meta(parser)
+     
       expect(feed.title).to eq("xkcd.com")
+    end
+
+    it "should set updated_at to now" do
+      feed = Feed.new(title: "xkcd.com",
+                      url: "https://xkcd.com/rss.xml",
+                      updated_at: 1.week.ago)
+      time = Time.zone.now
+      Timecop.freeze(time) do
+        feed.update_meta(parser)
+      end
+      
+      expect(feed.updated_at).to eq(time)
     end
   end
 
@@ -42,5 +55,33 @@ RSpec.describe Feed, :type => :model do
       feed.update_articles(parser)
       expect(Article.all.count).to eq(old_total_articles)
     end
+
+    it "should set feed updated_at to now" do
+      feed = Feed.new(title: "xkcd.com",
+                      url: "https://xkcd.com/rss.xml",
+                      updated_at: 1.week.ago)
+      time = Time.zone.now
+      Timecop.freeze(time) do
+        feed.update_articles(parser)
+      end
+
+      expect(feed.updated_at).to eq(time)
+    end
+
+    it "should set articles update_at to now" do
+      feed = Feed.new(title: "xkcd.com", url: "https://xkcd.com/rss.xml")
+      one_week_ago = 1.week.ago
+      Timecop.freeze(one_week_ago) do
+        feed.update_articles(parser)
+      end
+
+      now = Time.zone.now
+      Timecop.freeze(now) do
+        feed.update_articles(parser)
+      end
+
+      expect(Article.all.first.updated_at).to eq(now)
+    end
+ 
   end
 end
