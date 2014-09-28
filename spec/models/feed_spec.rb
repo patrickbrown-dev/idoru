@@ -29,12 +29,12 @@ RSpec.describe Feed, :type => :model do
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",
                       updated_at: 1.week.ago)
-      now = Time.zone.now
+      now = Time.now.round
       Timecop.freeze(now) do
         feed.update_meta(parser)
       end
       
-      expect(feed.updated_at).to eq(now)
+      expect(feed.updated_at.round).to eq(now)
     end
   end
 
@@ -60,12 +60,12 @@ RSpec.describe Feed, :type => :model do
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",
                       updated_at: 1.week.ago)
-      now = Time.zone.now
+      now = Time.now.round
       Timecop.freeze(now) do
         feed.update_articles(parser)
       end
 
-      expect(feed.updated_at).to eq(now)
+      expect(feed.updated_at.round).to eq(now)
     end
 
     it "should set articles update_at to now" do
@@ -76,12 +76,12 @@ RSpec.describe Feed, :type => :model do
         feed.update_articles(parser)
       end
 
-      now = Time.zone.now
+      now = Time.now.round
       Timecop.freeze(now) do
         feed.update_articles(parser)
       end
 
-      expect(Article.all.first.updated_at).to eq(now)
+      expect(Article.all.first.updated_at.round).to eq(now)
     end
  
   end
