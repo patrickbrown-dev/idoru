@@ -13,10 +13,18 @@ class Feed < ActiveRecord::Base
     feed = Feedjira::Feed.fetch_and_parse(url)
     
     feed.entries.each do |entry|
-      article = Article.new(title: entry.title,
-                            url: entry.url,
-                            summary: entry.summary)
-      article.save!
+      article = Article.where(url: entry.url).first
+
+      if article.nil?
+        article = Article.new(title: entry.title,
+                              url: entry.url,
+                              summary: entry.summary)
+        article.save!
+      else
+        article.update_attributes!(title: entry.title,
+                                   url: entry.url,
+                                   summary: entry.summary)
+      end
     end
   end
 
