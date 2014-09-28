@@ -4,13 +4,13 @@ class Feed < ActiveRecord::Base
   validates_presence_of(:title)
   validates_presence_of(:url)
 
-  def update_meta
-    feed = Feedjira::Feed.fetch_and_parse(url)
+  def update_meta(parser = Feedjira::Feed)
+    feed = parser.fetch_and_parse(url)
     self.update_attributes!(title: feed.title)
   end
 
-  def update_articles
-    feed = Feedjira::Feed.fetch_and_parse(url)
+  def update_articles(parser = Feedjira::Feed)
+    feed = parser.fetch_and_parse(url)
     
     feed.entries.each do |entry|
       article = Article.where(url: entry.url).first
