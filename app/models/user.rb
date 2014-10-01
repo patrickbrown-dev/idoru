@@ -7,4 +7,10 @@ class User < ActiveRecord::Base
   # Associations -------------------------------------------------------
 
   has_many :feeds
+
+  # Instance Methods ---------------------------------------------------
+
+  def create_feed(url)
+    Feed.create_and_update(url: url, user: self)
+  end
 end

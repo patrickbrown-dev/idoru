@@ -10,6 +10,14 @@ class Feed < ActiveRecord::Base
   validates_presence_of(:title)
   validates_presence_of(:url)
 
+  # Class Methods ------------------------------------------------------
+
+  def self.create_and_update(params)
+    feed = self.new(params)
+    feed.update_meta
+    feed
+  end
+
   # Instance Methods ---------------------------------------------------
  
   def update_meta(parser = Feedjira::Feed)

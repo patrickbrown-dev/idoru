@@ -15,6 +15,17 @@ RSpec.describe Feed, :type => :model do
 
   it { should validate_presence_of :title }
   it { should validate_presence_of :url }
+  
+  # Class Methods ------------------------------------------------------
+
+  describe "#create_and_update" do
+    it "should update_meta after creation" do
+      feed = Feed.create_and_update(url: "https://xkcd.com/rss.xml")
+
+      expect(feed.title).to eq("xkcd.com")
+
+    end
+  end
 
   # Instance Methods ---------------------------------------------------
  
