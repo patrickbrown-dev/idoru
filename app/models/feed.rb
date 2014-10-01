@@ -29,7 +29,7 @@ class Feed < ActiveRecord::Base
     feed = parser.fetch_and_parse(url)
     
     feed.entries.each do |entry|
-      article = Article.where(url: entry.url).first
+      article = Article.where(url: entry.url, feed: self).first
 
       if article.nil?
         article = Article.new(title: entry.title,
