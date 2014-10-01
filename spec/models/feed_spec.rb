@@ -9,6 +9,7 @@ RSpec.describe Feed, :type => :model do
   # Associations -------------------------------------------------------
 
   it { should have_many :articles }
+  it { should belong_to :user }
 
   # Validations --------------------------------------------------------
 

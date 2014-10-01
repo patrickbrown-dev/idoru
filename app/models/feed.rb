@@ -3,6 +3,7 @@ class Feed < ActiveRecord::Base
   # Associations -------------------------------------------------------
 
   has_many :articles
+  belongs_to :user
 
   # Validations --------------------------------------------------------
 
