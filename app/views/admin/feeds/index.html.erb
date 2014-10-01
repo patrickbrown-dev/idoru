@@ -8,6 +8,7 @@
       <th>id</th>
       <th>title</th>
       <th>url</th>
+      <th>user</th>
       <th>created_at</th>
       <th>updated_at</th>
       <th>actions</th>
@@ -20,6 +21,7 @@
         <td><%= feed.id %></td>
         <td><%= feed.title %></td>
         <td><%= feed.url %></td>
+        <td><%= feed.user.try(:email) %></td>
         <td><%= feed.created_at %></td>
         <td><%= feed.updated_at %></td>
         <td>

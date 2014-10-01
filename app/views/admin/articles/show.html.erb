@@ -4,6 +4,7 @@
       <th>id</th>
       <th>title</th>
       <th>url</th>
+      <th>feed</th>
       <th>created_at</th>
       <th>updated_at</th>
     </tr>
@@ -14,6 +15,7 @@
       <td><%= @article.id %></td>
       <td><%= @article.title %></td>
       <td><%= @article.url %></td>
+      <td><%= @article.feed.url %></td>
       <td><%= @article.created_at %></td>
       <td><%= @article.updated_at %></td>
     </tr>
