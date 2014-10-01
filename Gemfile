@@ -10,6 +10,7 @@ gem 'font-awesome-rails', '~> 4.1'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'feedjira'
+gem 'devise'
 
 gem 'jquery-rails'
 gem 'turbolinks'
