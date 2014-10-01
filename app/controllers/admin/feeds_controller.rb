@@ -1,6 +1,4 @@
-class Admin::FeedsController < ApplicationController
-  layout "admin"
-
+class Admin::FeedsController < Admin::BaseAdminController
   def index
     @feeds = Feed.all
   end
