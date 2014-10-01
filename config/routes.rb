@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
   
   namespace :admin do
+    resources :users, only: [:index, :show]
     resources :feeds, except: [:show, :destroy] do
       member do
         get :refresh
