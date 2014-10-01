@@ -20,7 +20,7 @@ RSpec.describe Feed, :type => :model do
 
   describe "#create_and_update" do
     it "should update_meta after creation" do
-      feed = Feed.create_and_update(url: "https://xkcd.com/rss.xml")
+      feed = Feed.create_and_update({url: "https://xkcd.com/rss.xml"}, parser)
 
       expect(feed.title).to eq("xkcd.com")
 

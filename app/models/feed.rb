@@ -12,9 +12,9 @@ class Feed < ActiveRecord::Base
 
   # Class Methods ------------------------------------------------------
 
-  def self.create_and_update(params)
+  def self.create_and_update(params, parser = Feedjira::Feed)
     feed = self.new(params)
-    feed.update_meta
+    feed.update_meta(parser)
     feed
   end
 
