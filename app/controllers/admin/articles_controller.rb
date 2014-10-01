@@ -1,6 +1,4 @@
-class Admin::ArticlesController < ApplicationController
-  layout "admin"
-
+class Admin::ArticlesController < Admin::BaseAdminController
   def index
     @articles = Article.all
   end
