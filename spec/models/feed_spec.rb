@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'awesome_print'
 
 RSpec.describe Feed, :type => :model do
 
