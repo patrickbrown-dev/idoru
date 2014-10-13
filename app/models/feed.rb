@@ -19,7 +19,7 @@ class Feed < ActiveRecord::Base
   end
 
   # Instance Methods ---------------------------------------------------
- 
+
   def update_meta(parser = Feedjira::Feed)
     feed = parser.fetch_and_parse(url)
     self.update_attributes!(title: feed.title, updated_at: Time.zone.now)
@@ -27,7 +27,7 @@ class Feed < ActiveRecord::Base
 
   def update_articles(parser = Feedjira::Feed)
     feed = parser.fetch_and_parse(url)
-    
+
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
 
@@ -45,6 +45,13 @@ class Feed < ActiveRecord::Base
 
       self.update_attributes!(updated_at: Time.zone.now)
     end
+  end
+
+  def purge
+    self.articles.each do |article|
+      article.destroy if article.updated_at < self.updated_at
+    end
+    self.purged_at = Time.zone.now
   end
 
 end

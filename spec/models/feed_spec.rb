@@ -1,11 +1,12 @@
 require 'rails_helper'
+require 'awesome_print'
 
 RSpec.describe Feed, :type => :model do
 
   # TODO(ptrckbrwn): close file.
   let!(:rss_xml) { File.open("spec/fixtures/rss.xml", "rb").read }
   let(:parser) { double(fetch_and_parse: Feedjira::Feed.parse(rss_xml)) }
-  
+
   # Associations -------------------------------------------------------
 
   it { should have_many :articles }
@@ -15,7 +16,7 @@ RSpec.describe Feed, :type => :model do
 
   it { should validate_presence_of :title }
   it { should validate_presence_of :url }
-  
+
   # Class Methods ------------------------------------------------------
 
   describe "#create_and_update" do
@@ -28,12 +29,12 @@ RSpec.describe Feed, :type => :model do
   end
 
   # Instance Methods ---------------------------------------------------
- 
+
   describe "#update_meta" do
     it "should update title" do
       feed = Feed.new(title: "foo", url: "https://xkcd.com/rss.xml")
       feed.update_meta(parser)
-     
+
       expect(feed.title).to eq("xkcd.com")
     end
 
@@ -45,7 +46,7 @@ RSpec.describe Feed, :type => :model do
       Timecop.freeze(now) do
         feed.update_meta(parser)
       end
-      
+
       expect(feed.updated_at.round).to eq(now)
     end
   end
@@ -63,7 +64,6 @@ RSpec.describe Feed, :type => :model do
       feed = Feed.new(title: "xkcd.com", url: "https://xkcd.com/rss.xml")
       feed.update_articles(parser)
       old_total_articles = Article.all.count
-
       feed.update_articles(parser)
       expect(Article.all.count).to eq(old_total_articles)
     end
@@ -82,7 +82,7 @@ RSpec.describe Feed, :type => :model do
 
     it "should set articles update_at to now" do
       feed = Feed.new(title: "xkcd.com", url: "https://xkcd.com/rss.xml")
-  
+
       one_week_ago = 1.week.ago
       Timecop.freeze(one_week_ago) do
         feed.update_articles(parser)
@@ -95,6 +95,37 @@ RSpec.describe Feed, :type => :model do
 
       expect(Article.all.first.updated_at.round).to eq(now)
     end
- 
+  end
+
+  describe "#purge" do
+    let(:new_time) { 1.day.ago.round }
+    let(:old_time) { 2.days.ago.round }
+    let(:feed) { Feed.new(title: "xkcd.com",
+                          url: "https://xkcd.com/rss.xml",
+                          updated_at: new_time,
+                          purged_at: old_time) }
+    before(:each) do
+      @new_article = Article.new(feed: feed,
+                                 title: "new",
+                                 url: "https://xkcd.com/new",
+                                 full_story: true,
+                                 updated_at: new_time).save!
+      @old_article = Article.new(feed: feed,
+                                 title: "old",
+                                 url: "https://xkcd.com/old",
+                                 full_story: true,
+                                 updated_at: old_time).save!
+    end
+
+    it "should delete articles that haven't been updated" do
+      feed.purge
+      expect(feed.articles.count).to eq(1)
+    end
+
+    it "should update last_purged_at" do
+      now = Time.now.round
+      Timecop.freeze(now) { feed.purge }
+      expect(feed.purged_at.round).to eq(now)
+    end
   end
 end
