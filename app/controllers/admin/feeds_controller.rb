@@ -1,21 +1,27 @@
 class Admin::FeedsController < Admin::BaseAdminController
   def index
-    @feeds = Feed.all
+    @feeds = Feed.order(:id).all
+  end
+
+  def show
+    @feed = Feed.find(params[:id])
   end
 
   def new
     @feed = Feed.new
+    @users = User.all.map {|user| [user.email, user.id] }
   end
 
   def create
     @feed = Feed.create(feed_params)
     @feed.update_meta
 
-    redirect_to admin_feeds_path, flash: { success: "Feed created" }
+    redirect_to admin_feed_path(@feed), flash: { success: "Feed created" }
   end
 
   def edit
     @feed = Feed.find(params[:id])
+    @users = User.all.map {|user| [user.email, user.id] }
   end
 
   def update
@@ -23,19 +29,19 @@ class Admin::FeedsController < Admin::BaseAdminController
     @feed.update_attributes!(feed_params)
     @feed.update_meta
 
-    redirect_to admin_feeds_path, flash: { success: "Feed updated" }
+    redirect_to admin_feed_path(@feed), flash: { success: "Feed updated" }
   end
 
   def refresh
     @feed = Feed.find(params[:id])
     @feed.update_articles
-    
-    redirect_to admin_feeds_path, flash: { success: "Feed articles refreshed" }
+
+    redirect_to admin_feed_path(@feed), flash: { success: "Feed articles refreshed" }
   end
 
   private
 
   def feed_params
-    params.require(:feed).permit(:url)
+    params.require(:feed).permit(:url, :user_id)
   end
 end
