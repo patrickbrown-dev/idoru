@@ -23,5 +23,6 @@
 </table>
 
 <article>
-  <%= @article.summary.html_safe %>
+  <%= @article.try(:summary).try(:html_safe) %>
+  <%= @article.try(:body).try(:html_safe) %>
 </article>
