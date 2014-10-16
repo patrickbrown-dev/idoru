@@ -5,7 +5,7 @@ namespace :batch_purge_feeds do
 
     feeds_to_purge = Feed.order(purged_at: :asc).first(batch_size)
     feeds_to_purge.each do |feed|
-      puts "Purging #{feed.title}..."
+      print "Purging #{feed.title}..."
       feed.purge
       puts "Done."
     end
