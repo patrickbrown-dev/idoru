@@ -10,6 +10,6 @@ Rails.application.routes.draw do
         get :purge
       end
     end
-    resources :articles, only: [:index, :show]
+    resources :articles, only: [:show]
   end
 end

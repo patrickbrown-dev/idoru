@@ -42,7 +42,7 @@
     <% @feed.articles.sort.each do |article| %>
       <tr>
         <td><%= article.id %></td>
-        <td><%= article.title %></td>
+        <td><%= link_to article.title, admin_article_path(article) %></td>
         <td><%= article.created_at %></td>
         <td><%= article.updated_at %></td>
       </tr>
