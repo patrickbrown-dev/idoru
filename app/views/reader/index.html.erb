@@ -1,0 +1,23 @@
+<h1>Articles</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>title</th>
+      <th>published_at</th>
+      <th>updated_at</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @articles.each do |article| %>
+      <tr>
+        <td><%= article.id %></td>
+        <td><%= link_to article.title, reader_path(article.id) %></td>
+        <td><%= article.published_at %></td>
+        <td><%= article.updated_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

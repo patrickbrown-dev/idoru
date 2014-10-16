@@ -33,17 +33,17 @@
     <tr>
       <th>id</th>
       <th>title</th>
-      <th>created_at</th>
+      <th>published_at</th>
       <th>updated_at</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @feed.articles.sort.each do |article| %>
+    <% @feed.articles.sort_by(&:published_at).reverse.each do |article| %>
       <tr>
         <td><%= article.id %></td>
         <td><%= link_to article.title, admin_article_path(article) %></td>
-        <td><%= article.created_at %></td>
+        <td><%= article.published_at %></td>
         <td><%= article.updated_at %></td>
       </tr>
     <% end %>
