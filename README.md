@@ -1,5 +1,4 @@
-cooper-rails[ ![Codeship Status for ptrckbrwn/cooper-rails](https://codeship.io/projects/94437320-e117-0131-eb89-628d6b4144ea/status)](https://codeship.io/projects/25190)
-============
+# cooper-rails[ ![Codeship Status for ptrckbrwn/cooper-rails](https://codeship.io/projects/94437320-e117-0131-eb89-628d6b4144ea/status)](https://codeship.io/projects/25190)
 
 *A Damn Fine RSS Reader™*
 
@@ -12,11 +11,10 @@ cooper-rails[ ![Codeship Status for ptrckbrwn/cooper-rails](https://codeship.io/
 > jelly. I'll be injecting my insulin in four minutes. Diane, slept
 > great last night. Got to find out what kind of sheets these are; not
 > cotton, not rayon, silky. Damn fine sheets. I'm gonna get naked and
-> slide around in them.
+> slide around in them. <br/>
 > -- Special Agent Dale Cooper
 
-Local Environment Setup
------------------------
+## Local Environment Setup
 
 ### Postgres
 
@@ -61,8 +59,7 @@ rails server
 5. Set them as admin (`user.is_admin = true`).
 6. Save them. (`user.save!`).
 
-Contributing
-------------
+## Contributing
 
 1. Fork this repo.
 2. Create a new branch with feature/issue name (`git checkout -b feature-foo-bar`).
