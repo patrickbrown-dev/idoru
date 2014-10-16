@@ -10,14 +10,18 @@ Local Environment Setup
 
 1. Postgres
 
-    brew install postgres
-    pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-    createdb cooper_test
-    createdb cooper_development
+```
+brew install postgres
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+reatedb cooper_test
+createdb cooper_development
+```
 
 2. Node.js
 
-    brew install node
+```
+brew install node
+```
 
 3. RVM
 
@@ -27,15 +31,21 @@ Local Environment Setup
 
 4. Run migrations
 
-    rake db:migrate
+```
+rake db:migrate
+```
 
 5. Create administrator
 
+```
 [TODO]
+```
 
 6. Serve application
 
-    rails server
+```
+rails server
+```
 
 Contributing
 ------------
