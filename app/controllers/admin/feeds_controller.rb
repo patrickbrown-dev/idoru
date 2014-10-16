@@ -39,6 +39,13 @@ class Admin::FeedsController < Admin::BaseAdminController
     redirect_to admin_feed_path(@feed), flash: { success: "Feed articles refreshed" }
   end
 
+  def purge
+    @feed = Feed.find(params[:id])
+    @feed.purge
+
+    redirect_to admin_feed_path(@feed), flash: { success: "Feed articles purged" }
+  end
+
   private
 
   def feed_params

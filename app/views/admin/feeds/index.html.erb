@@ -25,6 +25,7 @@
         <td>
           <%= link_to "edit", edit_admin_feed_path(feed), class: "btn btn-xs btn-default" %>
           <%= link_to "refresh", refresh_admin_feed_path(feed), class: "btn btn-xs btn-default" %>
+          <%= link_to "purge", purge_admin_feed_path(feed), class: "btn btn-xs btn-danger" %>
         </td>
       </tr>
     <% end %>

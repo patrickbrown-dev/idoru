@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :feeds, except: [:destroy] do
       member do
         get :refresh
+        get :purge
       end
     end
     resources :articles, only: [:index, :show]
