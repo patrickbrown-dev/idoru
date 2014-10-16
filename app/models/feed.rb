@@ -35,12 +35,16 @@ class Feed < ActiveRecord::Base
         article = Article.new(title: entry.title,
                               url: entry.url,
                               summary: entry.summary,
+                              published_at: entry.published,
+                              author: entry.author,
                               body: entry.content,
                               feed: self)
         article.save!
       else
         article.update_attributes!(title: entry.title,
                                    summary: entry.summary,
+                                   published_at: entry.published,
+                                   author: entry.author,
                                    body: entry.content,
                                    updated_at: Time.zone.now)
       end
