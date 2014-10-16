@@ -98,7 +98,7 @@ RSpec.describe Feed, :type => :model do
 
   describe "#purge" do
     let(:new_time) { 1.day.ago.round }
-    let(:old_time) { 2.days.ago.round }
+    let(:old_time) { 3.days.ago.round }
     let(:feed) { Feed.new(title: "xkcd.com",
                           url: "https://xkcd.com/rss.xml",
                           updated_at: new_time,
@@ -116,7 +116,7 @@ RSpec.describe Feed, :type => :model do
                                  updated_at: old_time).save!
     end
 
-    it "should delete articles that haven't been updated" do
+    it "should delete articles that haven't been updated in over a day" do
       feed.purge
       expect(feed.articles.count).to eq(1)
     end

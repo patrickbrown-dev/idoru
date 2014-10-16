@@ -51,9 +51,12 @@ class Feed < ActiveRecord::Base
 
   def purge
     self.articles.each do |article|
-      article.destroy if article.updated_at < self.updated_at
+      if (self.updated_at - article.updated_at) > 1.day
+        article.destroy
+      end
     end
     self.purged_at = Time.zone.now
+    self.save!
   end
 
 end
