@@ -3,7 +3,17 @@ cooper-rails[ ![Codeship Status for ptrckbrwn/cooper-rails](https://codeship.io/
 
 *A Damn Fine RSS Reader™*
 
-`ruby-2.1.2`
+> Diane, 11:31 pm. Just finished washing up and ready for bed. This
+> morning, I showered for nine minutes. Found seventeen hairs; three
+> curly, fourteen straight. I used the Basalm shampoo along with the
+> conditioner courtesy of the hotel and delivering what it promised. A
+> silky manageability. Cotton towel by Field Crest with just the right
+> amount of absorbancy. Consumed fifteen doughnuts today, Diane. All
+> jelly. I'll be injecting my insulin in four minutes. Diane, slept
+> great last night. Got to find out what kind of sheets these are; not
+> cotton, not rayon, silky. Damn fine sheets. I'm gonna get naked and
+> slide around in them.
+> -- Special Agent Dale Cooper
 
 Local Environment Setup
 -----------------------
@@ -26,8 +36,9 @@ brew install node
 ### RVM
 
 1. Follow setup guide here: [http://rvm.io/rvm/install][1].
-2. Change to your cooper directory: `cd ~/src/cooper-rails`.
-3. Run `bundle install`.
+2. Install ruby 2.1.2 (`rvm install ruby-2.1.2`).
+3. Change to your cooper directory (`cd ~/src/cooper-rails`).
+4. Run `bundle install`.
 
 ### Run migrations
 
