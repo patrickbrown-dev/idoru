@@ -13,7 +13,7 @@ Local Environment Setup
 ```
 brew install postgres
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-reatedb cooper_test
+createdb cooper_test
 createdb cooper_development
 ```
 
@@ -35,17 +35,20 @@ brew install node
 rake db:migrate
 ```
 
-### Create administrator
-
-```
-[TODO]
-```
-
 ### Serve application
 
 ```
 rails server
 ```
+
+### Create an administrator
+
+1. Navigate to cooper in your browser (`localhost:3000`).
+2. Click "Sign Up" and follow instructions.
+3. Open up your rails console (`rails console`).
+4. Find your user (`user = User.where(email: "chelsea.manning@lavabit.com").first`)
+5. Set them as admin (`user.is_admin = true`).
+6. Save them. (`user.save!`).
 
 Contributing
 ------------
