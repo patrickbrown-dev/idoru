@@ -1,6 +1,6 @@
 <h1>Feeds</h1>
 
-<%= link_to "New Feed", new_admin_feed_path, class: "btn btn-primary pull-right" %>
+<%= link_to "New Feed", new_admin_feed_path, class: "btn btn-primary" %>
 
 <table class="table table-striped">
   <thead>
@@ -9,7 +9,6 @@
       <th>title</th>
       <th>url</th>
       <th>user</th>
-      <th>created_at</th>
       <th>updated_at</th>
       <th>actions</th>
     </tr>
@@ -19,10 +18,9 @@
     <% @feeds.each do |feed| %>
       <tr>
         <td><%= feed.id %></td>
-        <td><%= feed.title %></td>
+        <td><%= link_to feed.title, admin_feed_path(feed) %></td>
         <td><%= feed.url %></td>
-        <td><%= feed.user.try(:email) %></td>
-        <td><%= feed.created_at %></td>
+        <td><%= link_to feed.user.email, admin_user_path(feed.user) %></td>
         <td><%= feed.updated_at %></td>
         <td>
           <%= link_to "edit", edit_admin_feed_path(feed), class: "btn btn-xs btn-default" %>
