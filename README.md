@@ -8,7 +8,7 @@ cooper-rails[ ![Codeship Status for ptrckbrwn/cooper-rails](https://codeship.io/
 Local Environment Setup
 -----------------------
 
-1. Postgres
+### Postgres
 
 ```
 brew install postgres
@@ -17,31 +17,31 @@ reatedb cooper_test
 createdb cooper_development
 ```
 
-2. Node.js
+### Node.js
 
 ```
 brew install node
 ```
 
-3. RVM
+### RVM
 
-  1. Follow setup guide here: [http://rvm.io/rvm/install][1].
-  2. Change to your cooper directory: `cd ~/src/cooper-rails`.
-  3. Run `bundle install`.
+1. Follow setup guide here: [http://rvm.io/rvm/install][1].
+2. Change to your cooper directory: `cd ~/src/cooper-rails`.
+3. Run `bundle install`.
 
-4. Run migrations
+### Run migrations
 
 ```
 rake db:migrate
 ```
 
-5. Create administrator
+### Create administrator
 
 ```
 [TODO]
 ```
 
-6. Serve application
+### Serve application
 
 ```
 rails server
