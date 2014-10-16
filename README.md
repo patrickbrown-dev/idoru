@@ -25,9 +25,9 @@ brew install node
 
 3. RVM
 
-  a. Follow setup guide here: [http://rvm.io/rvm/install][1].
-  b. Change to your cooper directory: `cd ~/src/cooper-rails`.
-  c. Run `bundle install`.
+  1. Follow setup guide here: [http://rvm.io/rvm/install][1].
+  2. Change to your cooper directory: `cd ~/src/cooper-rails`.
+  3. Run `bundle install`.
 
 4. Run migrations
 
