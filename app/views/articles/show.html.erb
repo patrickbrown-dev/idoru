@@ -1,0 +1,14 @@
+<h1>
+  <%= link_to @article.title, @article.url %>
+  <small><%= @article.feed.title %></small>
+</h1>
+<h4>
+  <% if @article.author.present? %>
+    by <%= @article.author %>
+  <% end %>
+  on <%= @article.published_at.strftime("%m/%d/%Y") %>
+</h4>
+<article>
+  <%= @article.summary.try(:html_safe) %>
+  <%= @article.body.try(:html_safe) %>
+</article>

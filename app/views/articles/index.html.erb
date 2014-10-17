@@ -1,0 +1,13 @@
+<table class="table table-striped">
+  <tbody>
+    <% @articles.each do |article| %>
+      <tr>
+        <td>
+          <h4><%= link_to article.title, article_path(article.id) %></h4>
+          <%= article.feed.title %>
+          <span class="pull-right"><%= article.published_at.strftime("%m/%d/%Y") %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
