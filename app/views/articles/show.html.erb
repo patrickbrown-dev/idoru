@@ -6,7 +6,7 @@
   <% if @article.author.present? %>
     by <%= @article.author %>
   <% end %>
-  on <%= @article.published_at.strftime("%m/%d/%Y") %>
+  on <%= @article.published_at.try(:strftime, "%m/%d/%Y") %>
 </h4>
 <article>
   <%= @article.summary.try(:html_safe) %>
