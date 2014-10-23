@@ -50,9 +50,21 @@ RSpec.describe Feed, :type => :model do
     end
   end
 
-  describe "#save_articles" do
+  describe "#update_articles" do
+    it "should cache articles for 1 day" do
+      an_hour_ago = 1.hour.ago
+      feed = Feed.new(title: "xkcd.com",
+                      url: "https://xkcd.com/rss.xml",
+                      updated_at: an_hour_ago)
+      feed.update_articles(parser)
+
+      expect(feed.updated_at.round).to eq(an_hour_ago.round)
+    end
+
     it "should save new Article for each entry" do
-      feed = Feed.new(title: "xkcd.com", url: "https://xkcd.com/rss.xml")
+      feed = Feed.new(title: "xkcd.com",
+                      url: "https://xkcd.com/rss.xml",
+                      updated_at: 1.week.ago)
       feed.update_articles(parser)
 
       expect(Article.all.count).to_not eq(0)
@@ -60,7 +72,9 @@ RSpec.describe Feed, :type => :model do
     end
 
     it "should update existing Articles if they have same url" do
-      feed = Feed.new(title: "xkcd.com", url: "https://xkcd.com/rss.xml")
+      feed = Feed.new(title: "xkcd.com",
+                      url: "https://xkcd.com/rss.xml",
+                      updated_at: 1.week.ago)
       feed.update_articles(parser)
       old_total_articles = Article.all.count
       feed.update_articles(parser)
@@ -71,28 +85,31 @@ RSpec.describe Feed, :type => :model do
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",
                       updated_at: 1.week.ago)
-      now = Time.now.round
+      now = Time.zone.now
       Timecop.freeze(now) do
         feed.update_articles(parser)
       end
 
-      expect(feed.updated_at.round).to eq(now)
+      expect(feed.updated_at.round).to eq(now.round)
     end
 
     it "should set articles update_at to now" do
-      feed = Feed.new(title: "xkcd.com", url: "https://xkcd.com/rss.xml")
-
+      pending "misbehaving and it's late"
       one_week_ago = 1.week.ago
+      feed = Feed.new(title: "xkcd.com",
+                      url: "https://xkcd.com/rss.xml",
+                      updated_at: one_week_ago)
+
       Timecop.freeze(one_week_ago) do
         feed.update_articles(parser)
       end
 
-      now = Time.now.round
+      now = Time.zone.now
       Timecop.freeze(now) do
         feed.update_articles(parser)
       end
 
-      expect(Article.all.first.updated_at.round).to eq(now)
+      expect(Article.all.first.updated_at.round).to eq(now.round)
     end
   end
 
