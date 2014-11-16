@@ -1,13 +1,14 @@
 <table class="table table-striped">
   <tbody>
-    <% @articles.each do |article| %>
-      <tr>
-        <td>
-          <h4><%= link_to article.title, article_path(article.id) %></h4>
-          <%= article.feed.title %>
-          <span class="pull-right"><%= article.published_at.try(:strftime, "%m/%d/%Y") %></span>
-        </td>
-      </tr>
-    <% end %>
+    {{#articles}}
+    <tr>
+      <td>
+        <h4>{{.title}}</h4>
+        {{.feed.title}}
+        <span class="pull-right">{{.published_at}}</span>
+      </td>
+    </tr>
+    {{/articles}}
+    {{^articles}}No articles found!({{/articles}}
   </tbody>
 </table>

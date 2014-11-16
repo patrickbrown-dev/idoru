@@ -5,6 +5,7 @@ class ArticlesController < ApplicationController
     @articles = Article
       .where("feed_id in (?)", @feeds.map{ |f| f.id })
       .order(published_at: :desc)
+    render json: @articles
   end
 
   def show
