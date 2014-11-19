@@ -52,6 +52,7 @@ RSpec.describe Feed, :type => :model do
 
   describe "#update_articles" do
     it "should cache articles for 1 day" do
+      pending "considering removing feature"
       an_hour_ago = 1.hour.ago
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",
@@ -94,7 +95,7 @@ RSpec.describe Feed, :type => :model do
     end
 
     it "should set articles update_at to now" do
-      pending "misbehaving and it's late"
+      pending "considering removing feature"
       one_week_ago = 1.week.ago
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",

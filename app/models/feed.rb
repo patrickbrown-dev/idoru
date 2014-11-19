@@ -26,8 +26,6 @@ class Feed < ActiveRecord::Base
   end
 
   def update_articles(parser = Feedjira::Feed)
-    return true if (Time.zone.now - self.updated_at) < 1.day
-
     feed = parser.fetch_and_parse(url)
 
     feed.entries.each do |entry|
@@ -42,13 +40,13 @@ class Feed < ActiveRecord::Base
                               body: entry.content,
                               feed: self)
         article.save!
-      else
-        article.update_attributes!(title: entry.title,
-                                   summary: entry.summary,
-                                   published_at: entry.published,
-                                   author: entry.author,
-                                   body: entry.content,
-                                   updated_at: Time.zone.now)
+      # else
+      #   article.update_attributes!(title: entry.title,
+      #                              summary: entry.summary,
+      #                              published_at: entry.published,
+      #                              author: entry.author,
+      #                              body: entry.content,
+      #                              updated_at: Time.zone.now)
       end
 
       self.update_attributes!(updated_at: Time.zone.now)
