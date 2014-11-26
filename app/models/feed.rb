@@ -19,20 +19,31 @@ class Feed < ActiveRecord::Base
     feed
   end
 
+  def self.failure_callback
+  end
+
   # Instance Methods ---------------------------------------------------
 
   def update_meta(parser = Feedjira::Feed)
-    feed = parser.fetch_and_parse(url)
+    failure_callback = lambda do |curl, err|
+      Bugsnag.notify(RuntimeError.new("Feed could not be parsed."),
+                     { curl: curl, err: err })
+    end
+    feed = parser.fetch_and_parse(url, on_failure: failure_callback)
     self.update_attributes!(title: feed.title, updated_at: Time.zone.now)
   end
 
   def update_articles(parser = Feedjira::Feed, force_update = false)
     return unless update_candidate? || force_update
+    failure_callback = lambda do |curl, err|
+      Bugsnag.notify(RuntimeError.new("Feed could not be parsed."),
+                     { curl: curl, err: err })
+    end
+    feed = parser.fetch_and_parse(url, on_failure: failure_callback)
+    return if feed.try(:entries).nil?
 
-    feed = parser.fetch_and_parse(url)
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
-
       if article.nil?
         Article.create!(title: entry.title,
                         url: entry.url,
