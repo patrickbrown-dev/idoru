@@ -34,13 +34,13 @@ class Feed < ActiveRecord::Base
       article = Article.where(url: entry.url, feed: self).first
 
       if article.nil?
-        article = Article.create!(title: entry.title,
-                                  url: entry.url,
-                                  summary: entry.summary,
-                                  published_at: entry.published,
-                                  author: entry.author,
-                                  body: entry.content,
-                                  feed: self)
+        Article.create!(title: entry.title,
+                        url: entry.url,
+                        summary: entry.summary,
+                        published_at: entry.published,
+                        author: entry.author,
+                        body: entry.content,
+                        feed: self)
       end
 
       self.update_attributes!(updated_at: Time.zone.now)
@@ -60,8 +60,7 @@ class Feed < ActiveRecord::Base
   private
 
   def update_candidate?
-    time_since_creation = Time.zone.now - self.created_at
-    time_since_update   = Time.zone.now - self.updated_at
-    time_since_creation < 1.day || time_since_update > 1.day
+    time_since_update = Time.zone.now - updated_at
+    time_since_update > 1.day
   end
 end

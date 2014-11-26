@@ -39,7 +39,8 @@ class Admin::FeedsController < Admin::BaseAdminController
   def refresh
     @feed = Feed.find(params[:id])
     @feed.update_articles(Feedjira::Feed, true)
-    redirect_to admin_feed_path(@feed), flash: { success: "Feed articles refreshed" }
+    redirect_to(admin_feed_path(@feed),
+                flash: { success: "Feed articles refreshed" })
   end
 
   private
