@@ -13,9 +13,7 @@ class Admin::FeedsController < Admin::BaseAdminController
   end
 
   def create
-    @feed = Feed.create(feed_params)
-    @feed.update_meta
-
+    @feed = Feed.create_and_update(feed_params)
     redirect_to admin_feed_path(@feed), flash: { success: "Feed created" }
   end
 
@@ -28,22 +26,20 @@ class Admin::FeedsController < Admin::BaseAdminController
     @feed = Feed.find(params[:id])
     @feed.update_attributes!(feed_params)
     @feed.update_meta
-
     redirect_to admin_feed_path(@feed), flash: { success: "Feed updated" }
+  end
+
+  def destroy
+    feed = Feed.find(params[:id])
+    feed.articles.destroy_all
+    Feed.destroy(params[:id])
+    redirect_to admin_feeds_path, flash: { success: "Feed destroyed" }
   end
 
   def refresh
     @feed = Feed.find(params[:id])
-    @feed.update_articles
-
+    @feed.update_articles(Feedjira::Feed, true)
     redirect_to admin_feed_path(@feed), flash: { success: "Feed articles refreshed" }
-  end
-
-  def purge
-    @feed = Feed.find(params[:id])
-    @feed.purge
-
-    redirect_to admin_feed_path(@feed), flash: { success: "Feed articles purged" }
   end
 
   private

@@ -52,7 +52,6 @@ RSpec.describe Feed, :type => :model do
 
   describe "#update_articles" do
     it "should cache articles for 1 day" do
-      pending "considering removing feature"
       an_hour_ago = 1.hour.ago
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",

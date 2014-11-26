@@ -2,7 +2,7 @@
 
 <%= link_to "edit", edit_admin_feed_path(@feed), class: "btn btn-default" %>
 <%= link_to "refresh", refresh_admin_feed_path(@feed), class: "btn btn-default" %>
-<%= link_to "purge", purge_admin_feed_path(@feed), class: "btn btn-danger" %>
+<%= link_to 'destroy', admin_feed_path(@feed), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
 
 <table class="table table-striped">
   <thead>
