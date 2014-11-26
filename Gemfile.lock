@@ -32,6 +32,9 @@ GEM
     bcrypt (3.1.7)
     bootstrap-sass (3.2.0.0)
       sass (~> 3.2)
+    bugsnag (2.5.1)
+      httparty (>= 0.6, < 1.0)
+      multi_json (~> 1.0)
     builder (3.2.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -58,6 +61,9 @@ GEM
     font-awesome-rails (4.1.0.0)
       railties (>= 3.2, < 5.0)
     hike (1.2.3)
+    httparty (0.13.3)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.9)
     jbuilder (2.1.1)
       activesupport (>= 3.0.0, < 5)
@@ -76,6 +82,7 @@ GEM
     mini_portile (0.6.0)
     minitest (5.3.5)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     newrelic_rpm (3.9.4.245)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
@@ -178,6 +185,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   bootstrap-sass (~> 3.2.0)
+  bugsnag
   coffee-rails (~> 4.0.0)
   devise
   feedjira
