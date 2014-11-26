@@ -15,6 +15,7 @@ class Feed < ActiveRecord::Base
   def self.create_and_update(params, parser = Feedjira::Feed)
     feed = self.new(params)
     feed.update_meta(parser)
+    feed.update_articles(parser, true)
     feed
   end
 
@@ -25,28 +26,21 @@ class Feed < ActiveRecord::Base
     self.update_attributes!(title: feed.title, updated_at: Time.zone.now)
   end
 
-  def update_articles(parser = Feedjira::Feed)
-    feed = parser.fetch_and_parse(url)
+  def update_articles(parser = Feedjira::Feed, force_update = false)
+    return unless update_candidate? || force_update
 
+    feed = parser.fetch_and_parse(url)
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
 
       if article.nil?
-        article = Article.new(title: entry.title,
-                              url: entry.url,
-                              summary: entry.summary,
-                              published_at: entry.published,
-                              author: entry.author,
-                              body: entry.content,
-                              feed: self)
-        article.save!
-      # else
-      #   article.update_attributes!(title: entry.title,
-      #                              summary: entry.summary,
-      #                              published_at: entry.published,
-      #                              author: entry.author,
-      #                              body: entry.content,
-      #                              updated_at: Time.zone.now)
+        Article.create!(title: entry.title,
+                        url: entry.url,
+                        summary: entry.summary,
+                        published_at: entry.published,
+                        author: entry.author,
+                        body: entry.content,
+                        feed: self)
       end
 
       self.update_attributes!(updated_at: Time.zone.now)
@@ -63,4 +57,10 @@ class Feed < ActiveRecord::Base
     self.save!
   end
 
+  private
+
+  def update_candidate?
+    time_since_update = Time.zone.now - updated_at
+    time_since_update > 1.day
+  end
 end

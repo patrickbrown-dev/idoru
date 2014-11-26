@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users, only: [:index, :show]
-    resources :feeds, except: [:destroy] do
+    resources :feeds do
       member do
         get :refresh
         get :purge
