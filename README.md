@@ -1,4 +1,4 @@
-# cooper-rails [![Circle CI](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/cooper-rails/badge.png)](https://coveralls.io/r/ptrckbrwn/cooper-rails)
+# cooper-rails [![Circle CI](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/cooper-rails/badge.png?branch=master)](https://coveralls.io/r/ptrckbrwn/cooper-rails?branch=master)
 *A Damn Fine RSS Reader™*
 
 > Diane, 11:31 pm. Just finished washing up and ready for bed. This
