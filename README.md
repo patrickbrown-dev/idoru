@@ -1,5 +1,4 @@
-# cooper-rails[ ![Codeship Status for ptrckbrwn/cooper-rails](https://codeship.io/projects/94437320-e117-0131-eb89-628d6b4144ea/status)](https://codeship.io/projects/25190)
-
+# cooper-rails [![Circle CI](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master)
 *A Damn Fine RSS Reader™*
 
 > Diane, 11:31 pm. Just finished washing up and ready for bed. This
