@@ -19,7 +19,7 @@ RSpec.describe Feed, :type => :model do
     let(:bad_url) { "http://not.a.feed/" }
 
     it "shouldn't be valid" do
-      feed = Feed.new({url: bad_url})
+      feed = Feed.new(url: bad_url)
       feed.valid?
       expect(feed.errors[:base]).to eq(["Bad response"])
     end
@@ -35,7 +35,7 @@ RSpec.describe Feed, :type => :model do
     end
 
     it "should update_meta after creation" do
-      feed = Feed.create_and_update({url: "https://xkcd.com/rss.xml"})
+      feed = Feed.create_and_update(url: "https://xkcd.com/rss.xml")
       expect(feed.title).to eq("xkcd.com")
     end
   end

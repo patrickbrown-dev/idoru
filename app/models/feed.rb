@@ -14,7 +14,7 @@ class Feed < ActiveRecord::Base
   # Class Methods ------------------------------------------------------
 
   def self.create_and_update(params)
-    feed_record = self.new(params)
+    feed_record = new(params)
     feed_record.title = params[:url] # Set title to url temporarily
     if feed_record.valid?
       feed_record.update_meta
