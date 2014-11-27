@@ -13,8 +13,12 @@ class Admin::FeedsController < Admin::BaseAdminController
   end
 
   def create
-    @feed = Feed.create_and_update(feed_params)
-    redirect_to admin_feed_path(@feed), flash: { success: "Feed created" }
+    begin
+      @feed = Feed.create_and_update(feed_params)
+      redirect_to admin_feed_path(@feed), flash: { success: "Feed created" }
+    rescue ActiveRecord::RecordInvalid => e
+      redirect_to admin_feeds_path, flash: { warning: "Error creating feed" }
+    end
   end
 
   def edit
@@ -38,7 +42,7 @@ class Admin::FeedsController < Admin::BaseAdminController
 
   def refresh
     @feed = Feed.find(params[:id])
-    @feed.update_articles(Feedjira::Feed, true)
+    @feed.update_articles(true)
     redirect_to(admin_feed_path(@feed),
                 flash: { success: "Feed articles refreshed" })
   end

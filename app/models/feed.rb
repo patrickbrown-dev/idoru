@@ -9,39 +9,29 @@ class Feed < ActiveRecord::Base
 
   validates_presence_of(:title)
   validates_presence_of(:url)
+  validate :valid_feed
 
   # Class Methods ------------------------------------------------------
 
-  def self.create_and_update(params, parser = Feedjira::Feed)
-    feed = self.new(params)
-    feed.update_meta(parser)
-    feed.update_articles(parser, true)
-    feed
-  end
-
-  def self.failure_callback
+  def self.create_and_update(params)
+    feed_record = self.new(params)
+    if feed_record.valid?
+      feed_record.update_meta
+      feed_record.update_articles(true)
+      feed_record
+    else
+      raise ActiveRecord::RecordInvalid.new(feed_record)
+    end
   end
 
   # Instance Methods ---------------------------------------------------
 
-  def update_meta(parser = Feedjira::Feed)
-    failure_callback = lambda do |curl, err|
-      Bugsnag.notify(RuntimeError.new("Feed could not be parsed."),
-                     { curl: curl, err: err })
-    end
-    feed = parser.fetch_and_parse(url, on_failure: failure_callback)
+  def update_meta
     self.update_attributes!(title: feed.title, updated_at: Time.zone.now)
   end
 
-  def update_articles(parser = Feedjira::Feed, force_update = false)
-    return unless update_candidate? || force_update
-    failure_callback = lambda do |curl, err|
-      Bugsnag.notify(RuntimeError.new("Feed could not be parsed."),
-                     { curl: curl, err: err })
-    end
-    feed = parser.fetch_and_parse(url, on_failure: failure_callback)
-    return if feed.try(:entries).nil?
-
+  def update_articles(force_update = false)
+    return unless (update_candidate? || force_update) && valid?
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
       if article.nil?
@@ -53,25 +43,22 @@ class Feed < ActiveRecord::Base
                         body: entry.content,
                         feed: self)
       end
-
       self.update_attributes!(updated_at: Time.zone.now)
     end
   end
 
-  def purge
-    self.articles.each do |article|
-      if (self.updated_at - article.updated_at) > 1.day
-        article.destroy
-      end
-    end
-    self.purged_at = Time.zone.now
-    self.save!
-  end
-
   private
+
+  def feed
+    @feed ||= Feedjira::Feed.fetch_and_parse(url)
+  end
 
   def update_candidate?
     time_since_update = Time.zone.now - updated_at
     time_since_update > 1.day
+  end
+
+  def valid_feed
+    errors[:base] << "Bad response" unless feed.is_a?(Feedjira::Parser::RSS)
   end
 end
