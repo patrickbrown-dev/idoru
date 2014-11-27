@@ -114,20 +114,5 @@ RSpec.describe Feed, :type => :model do
 
       expect(feed.updated_at.round).to eq(now.round)
     end
-
-    it "should set articles update_at to now" do
-      pending "considering removing feature"
-      one_week_ago = 1.week.ago
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: one_week_ago)
-
-      Timecop.freeze(one_week_ago) { feed.update_articles }
-
-      now = Time.zone.now
-      Timecop.freeze(now) { feed.update_articles }
-
-      expect(Article.all.first.updated_at.round).to eq(now.round)
-    end
   end
 end
