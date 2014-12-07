@@ -32,12 +32,12 @@ var Article = React.createClass({
           {this.props.article["title"]}
         </a>
         <small class="text-muted">
-          &nbsp;({this.props.article["feed_title"]})
+          <em>&nbsp;{this.props.article["feed_title"]}</em>
         </small>
+        <p><small class="text-muted">
+          {this.props.article["published_at"]}
+        </small></p>
       </h4>
-      <small class="text-muted">
-        {this.props.article["published_at"]}
-      </small>
       </div>
     );
   }
