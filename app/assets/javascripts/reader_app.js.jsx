@@ -2,7 +2,7 @@ var Reader = React.createClass({
   getInitialState: function() {
     return {
       articles: [],
-      flash: {type: "info", message: "I'm going to let you in on a little secret: every day, once a day, give yourself a present. Don't plan it; don't wait for it; just let it happen."}
+      flash: {type: "info", message: "(◡ ‿ ◡ ✿)"}
     };
   },
 
@@ -13,7 +13,7 @@ var Reader = React.createClass({
     $.get(this.props.refreshUrl, function(result) {
       this.setState({
         articles: result,
-        flash: {type: "success", message: "Feeds refreshed."}
+        flash: {type: "success", message: "Feeds refreshed. (◡ ‿ ◡ ✿)"}
       });
     }.bind(this));
   },
@@ -30,7 +30,7 @@ var Reader = React.createClass({
     $.post(this.props.newFeedUrl, {feed: {url: url}}, function(result) {
       this.setState({
         articles: result,
-        flash: {type: "success", message: "Feed added."}
+        flash: {type: "success", message: "Feed added. (◡ ‿ ◡ ✿)"}
       });
     }.bind(this));
   },
@@ -48,7 +48,7 @@ var Reader = React.createClass({
     return (
       <div className={"row"}>
         <div className={"col-sm-6 col-sm-offset-3"}>
-          <h1>Cooper <small>The damn simple RSS reader.</small></h1>
+          <h1>Idoru</h1>
         <div className={"page"}>
           {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
       <div className={"input-group"}>
