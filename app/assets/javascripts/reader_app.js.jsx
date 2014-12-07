@@ -1,12 +1,16 @@
 var Reader = React.createClass({
   getInitialState: function() {
-    return { articles: [] };
+    return {
+      articles: []
+    };
   },
 
   handleClick: function(event) {
     $.get(this.props.source, function(result) {
-      console.log("handleclick called.")
-      this.setState({ articles: result });
+      this.setState({
+        articles: result,
+        flash: {type: "success", message: "Feeds successfully refreshed."}
+      });
     }.bind(this));
   },
 
@@ -21,8 +25,19 @@ var Reader = React.createClass({
   render: function() {
     return (
       <div class="page">
+        {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
         <RefreshButton source="/api/articles/refresh.json" onClick={this.handleClick} />
         <Articles articles={this.state["articles"]} />
+      </div>
+    );
+  }
+});
+
+var Flash = React.createClass({
+  render: function() {
+    return (
+      <div className={"alert alert-" + this.props.flash.type}>
+        {this.props.flash.message}
       </div>
     );
   }
@@ -31,7 +46,7 @@ var Reader = React.createClass({
 var Articles = React.createClass({
   render: function() {
     return (
-      <div class="articles">{
+      <div className={"articles"}>{
         this.props.articles.map(function(article) {
           return ( <Article article={article} /> );
         })
