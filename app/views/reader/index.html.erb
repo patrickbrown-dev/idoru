@@ -1,0 +1,12 @@
+<h1>Hello World!</h1>
+
+<div id="app"></div>
+
+<script>
+ $(function() {
+   "use strict";
+   $.get("/api/feeds.json", function(data){
+     console.log(data);
+   });
+ });
+</script>
