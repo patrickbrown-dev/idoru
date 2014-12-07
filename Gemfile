@@ -12,6 +12,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'feedjira'
 gem 'devise'
 gem 'bugsnag'
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 
 gem 'jquery-rails'
 gem 'turbolinks'
