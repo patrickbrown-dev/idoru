@@ -1,11 +1,15 @@
 var Reader = React.createClass({
   getInitialState: function() {
     return {
-      articles: []
+      articles: [],
+      flash: {type: "info", message: "I'm going to let you in on a little secret: every day, once a day, give yourself a present. Don't plan it; don't wait for it; just let it happen."}
     };
   },
 
   refreshClick: function(event) {
+    this.setState({
+      flash: {type: "warning", message: "Refreshing feeds..."}
+    });
     $.get(this.props.refreshUrl, function(result) {
       this.setState({
         articles: result,
@@ -20,7 +24,9 @@ var Reader = React.createClass({
 
   newFeedClick: function(event) {
     var url = this.state.newFeedValue;
-    console.log(url);
+    this.setState({
+      flash: {type: "warning", message: "Adding feed..."}
+    });
     $.post(this.props.newFeedUrl, {feed: {url: url}}, function(result) {
       this.setState({
         articles: result,
