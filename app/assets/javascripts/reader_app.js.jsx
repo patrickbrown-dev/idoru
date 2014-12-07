@@ -5,17 +5,32 @@ var Reader = React.createClass({
     };
   },
 
-  handleClick: function(event) {
-    $.get(this.props.source, function(result) {
+  refreshClick: function(event) {
+    $.get(this.props.refreshUrl, function(result) {
       this.setState({
         articles: result,
-        flash: {type: "success", message: "Feeds successfully refreshed."}
+        flash: {type: "success", message: "Feeds refreshed."}
+      });
+    }.bind(this));
+  },
+
+  handleChange: function(event) {
+    this.setState({newFeedValue: event.target.value});
+  },
+
+  newFeedClick: function(event) {
+    var url = this.state.newFeedValue;
+    console.log(url);
+    $.post(this.props.newFeedUrl, {feed: {url: url}}, function(result) {
+      this.setState({
+        articles: result,
+        flash: {type: "success", message: "Feed added."}
       });
     }.bind(this));
   },
 
   componentDidMount: function() {
-    $.get(this.props.source, function(result) {
+    $.get(this.props.articlesUrl, function(result) {
       if (this.isMounted()) {
         this.setState({ articles: result });
       }
@@ -23,11 +38,23 @@ var Reader = React.createClass({
   },
 
   render: function() {
+    var newFeedValue = this.state.newFeedValue;
     return (
-      <div class="page">
-        {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
-        <RefreshButton source="/api/articles/refresh.json" onClick={this.handleClick} />
-        <Articles articles={this.state["articles"]} />
+      <div className={"row"}>
+        <div className={"col-sm-6 col-sm-offset-3"}>
+          <h1>Cooper <small>The damn simple RSS reader.</small></h1>
+        <div className={"page"}>
+          {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
+      <div className={"input-group"}>
+        <input type={"text"} className={"form-control"} value={newFeedValue} onChange={this.handleChange} />
+        <span className={"input-group-btn"}>
+          <NewFeedButton onClick={this.newFeedClick} />
+          <RefreshButton onClick={this.refreshClick} />
+        </span>
+      </div>
+      <Articles articles={this.state["articles"]} />
+        </div>
+        </div>
       </div>
     );
   }
@@ -58,15 +85,15 @@ var Articles = React.createClass({
 var Article = React.createClass({
   render: function() {
     return (
-      <div class="article">
+      <div className={"article"}>
         <h4>
           <a href={this.props.article["url"]}>
             {this.props.article["title"]}
           </a>
-          <small class="text-muted">
+          <small className={"text-muted"}>
             <em>&nbsp;{this.props.article["feed_title"]}</em>
           </small>
-          <p><small class="text-muted">
+          <p><small className={"text-muted"}>
             {this.props.article["published_at"]}
           </small></p>
         </h4>
@@ -85,7 +112,19 @@ var RefreshButton = React.createClass({
   }
 });
 
+var NewFeedButton = React.createClass({
+  render: function() {
+    return (
+      <button className={"btn btn-primary"} onClick={this.props.onClick}>
+        <i className={"fa fa-plus"}></i>
+      </button>
+    );
+  }
+});
+
 React.render(
-  <Reader source="/api/articles.json" />,
+  <Reader articlesUrl="/api/articles.json"
+          refreshUrl="/api/articles/refresh.json"
+          newFeedUrl="/api/feeds" />,
   document.getElementById("app")
 );
