@@ -7,6 +7,7 @@ class Api::ArticlesController < ApplicationController
     @articles = Article
                 .where(feed_id: @feeds.map{ |f| f.id })
                 .order(published_at: :desc)
+                .limit(25)
 
     respond_to do |format|
       format.json { render json: zip_with_feeds(@articles) }
