@@ -1,18 +1,13 @@
 var Reader = React.createClass({
-  render: function() {
-    return (
-      <div class="page">
-        <RefreshButton source="/api/articles/refresh.json"/>
-        <Articles source="/api/articles.json" />
-      </div>
-    );
-  }
-});
-
-var Articles = React.createClass({
   getInitialState: function() {
     return { articles: [] };
+  },
 
+  handleClick: function(event) {
+    $.get(this.props.source, function(result) {
+      console.log("handleclick called.")
+      this.setState({ articles: result });
+    }.bind(this));
   },
 
   componentDidMount: function() {
@@ -24,10 +19,20 @@ var Articles = React.createClass({
   },
 
   render: function() {
-    var articles = this.state["articles"];
+    return (
+      <div class="page">
+        <RefreshButton source="/api/articles/refresh.json" onClick={this.handleClick} />
+        <Articles articles={this.state["articles"]} />
+      </div>
+    );
+  }
+});
+
+var Articles = React.createClass({
+  render: function() {
     return (
       <div class="articles">{
-        articles.map(function(article) {
+        this.props.articles.map(function(article) {
           return ( <Article article={article} /> );
         })
       }</div>
@@ -56,19 +61,9 @@ var Article = React.createClass({
 });
 
 var RefreshButton = React.createClass({
-  getInitialState: function() {
-    return {liked: false};
-  },
-  handleClick: function(event) {
-    $.get(this.props.source, function(result) {
-      if (this.isMounted()) {
-        this.setState({ articles: result });
-      }
-    }.bind(this));
-  },
   render: function() {
     return (
-      <button className={"btn btn-default"} onClick={this.handleClick}>
+      <button className={"btn btn-default"} onClick={this.props.onClick}>
         <i className={"fa fa-refresh"}></i>
       </button>
     );
@@ -76,6 +71,6 @@ var RefreshButton = React.createClass({
 });
 
 React.render(
-  <Reader />,
+  <Reader source="/api/articles.json" />,
   document.getElementById("app")
 );
