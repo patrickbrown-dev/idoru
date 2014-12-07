@@ -26,12 +26,12 @@ class Api::ArticlesController < ApplicationController
 
   private
 
-  def get_articles(refresh=false)
+  def get_articles(refresh = false)
     @feeds = Feed.where(user_id: current_user)
     @feeds.each { |feed| feed.update_articles } if refresh
-    Article .where(feed_id: @feeds.map{ |f| f.id })
-      .order(published_at: :desc)
-      .limit(25)
+    Article.where(feed_id: @feeds.map { |f| f.id }).
+      order(published_at: :desc).
+      limit(25)
   end
 
   def zip_with_feeds(articles)
