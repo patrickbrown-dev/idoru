@@ -2,12 +2,15 @@ class Api::ArticlesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @feeds = Feed.where(user_id: current_user)
-    @feeds.each { |feed| feed.update_articles }
-    @articles = Article
-                .where(feed_id: @feeds.map{ |f| f.id })
-                .order(published_at: :desc)
-                .limit(25)
+    @articles = get_articles
+
+    respond_to do |format|
+      format.json { render json: zip_with_feeds(@articles) }
+    end
+  end
+
+  def refresh
+    @articles = get_articles(true)
 
     respond_to do |format|
       format.json { render json: zip_with_feeds(@articles) }
@@ -22,6 +25,14 @@ class Api::ArticlesController < ApplicationController
   end
 
   private
+
+  def get_articles(refresh=false)
+    @feeds = Feed.where(user_id: current_user)
+    @feeds.each { |feed| feed.update_articles } if refresh
+    Article .where(feed_id: @feeds.map{ |f| f.id })
+      .order(published_at: :desc)
+      .limit(25)
+  end
 
   def zip_with_feeds(articles)
     articles.map do |a|
