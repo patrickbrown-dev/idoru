@@ -74,17 +74,6 @@ RSpec.describe Feed, :type => :model do
       end
     end
 
-    it "should cache articles for 1 day" do
-      now = Time.zone.now
-      an_hour_ago = now - 1.hour
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: an_hour_ago)
-      Timecop.freeze(now) { feed.update_articles }
-
-      expect(feed.updated_at.round).to eq(an_hour_ago.round)
-    end
-
     it "should save new Article for each entry" do
       feed = Feed.new(title: "xkcd.com",
                       url: "https://xkcd.com/rss.xml",

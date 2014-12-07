@@ -18,7 +18,7 @@ class Feed < ActiveRecord::Base
     feed_record.title = params[:url] # Set title to url temporarily
     if feed_record.valid?
       feed_record.update_meta
-      feed_record.update_articles(true)
+      feed_record.update_articles
       feed_record
     else
       raise ActiveRecord::RecordInvalid.new(feed_record)
@@ -31,8 +31,8 @@ class Feed < ActiveRecord::Base
     self.update_attributes!(title: feed.title, updated_at: Time.zone.now)
   end
 
-  def update_articles(force_update = false)
-    return unless (update_candidate? || force_update) && valid?
+  def update_articles
+    return unless valid?
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
       if article.nil?
@@ -52,11 +52,6 @@ class Feed < ActiveRecord::Base
 
   def feed
     @feed ||= Feedjira::Feed.fetch_and_parse(url)
-  end
-
-  def update_candidate?
-    time_since_update = Time.zone.now - updated_at
-    time_since_update > 1.day
   end
 
   def valid_feed
