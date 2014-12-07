@@ -55,6 +55,6 @@ class Feed < ActiveRecord::Base
   end
 
   def valid_feed
-    errors[:base] << "Bad response" unless feed.is_a?(Feedjira::Parser::RSS)
+    errors[:base] << "Bad response" if feed.is_a?(Fixnum)
   end
 end
