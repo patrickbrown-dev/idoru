@@ -1,3 +1,3 @@
-//= require ./react.min.js
-//= require reader_app
+//= require react.min.js
+//= require reader_app.js
 
