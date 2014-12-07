@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         get :refresh
       end
     end
-    resources :articles, only: [:show]
+    resources :articles, only: [:index, :show]
   end
 
   namespace :admin do
