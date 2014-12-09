@@ -52,7 +52,7 @@ namespace :deploy do
   after :finished, :restart_unicorn do
     on roles :all do
       within release_path do
-        execute "unicorn:restart"
+        execute :service, "unicorn restart"
       end
     end
   end
