@@ -248,6 +248,7 @@ DEPENDENCIES
   bugsnag
   capistrano-rails (~> 1.1.1)
   capistrano-rvm
+  capistrano-stats
   coveralls
   devise
   feedjira
