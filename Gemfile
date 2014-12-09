@@ -8,7 +8,6 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'font-awesome-rails', '~> 4.1'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
 gem 'feedjira'
 gem 'devise'
 gem 'bugsnag'
@@ -30,6 +29,8 @@ group :production do
 end
 
 group :development, :test do
+  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rvm'
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'timecop'
