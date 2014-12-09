@@ -40,6 +40,10 @@ set :rvm_ruby_version, '2.1.3@cooper'    # Defaults to: 'default'
 #set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
 
 namespace :deploy do
+  after "deploy:setup", :setup_group
+  task :setup_group do
+    run "chown -R rails:www-data #{latest_release}"
+  end
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
