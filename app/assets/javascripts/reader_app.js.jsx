@@ -58,8 +58,7 @@ var Reader = React.createClass({
     return (
       <div className={"row"}>
         <div className={"col-sm-6 col-sm-offset-3"}>
-          <h1>Idoru</h1>
-        <div className={"page"}>
+          <Header />
           {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
       <div className={"input-group"}>
         <input type={"text"} className={"form-control"} value={newFeedValue} onChange={this.handleChange} />
@@ -69,7 +68,7 @@ var Reader = React.createClass({
         </span>
       </div>
       <Articles articles={this.state["articles"]} />
-        </div>
+          <Footer />
         </div>
       </div>
     );
@@ -134,6 +133,37 @@ var NewFeedButton = React.createClass({
       <button className={"btn btn-primary"} onClick={this.props.onClick}>
         <i className={"fa fa-plus"}></i>
       </button>
+    );
+  }
+});
+
+var Header = React.createClass({
+  render: function() {
+    return (
+      <header>
+        <div className={"pull-right"}>
+          <ul className={"nav nav-pills"}>
+            <li role={"presentation"}>
+              <a href="http://cabaltherapy.com">Blog</a>
+            </li>
+            <li>
+              <a data-method="delete" href="/users/sign_out" rel="nofollow">Sign Out</a>
+            </li>
+          </ul>
+        </div>
+        <h1>Idoru</h1>
+      </header>
+    );
+  }
+});
+
+var Footer = React.createClass({
+  render: function() {
+    return (
+      <footer>
+        <hr />
+        <p className={"text-center"}>Idoru was made by <a href={"http://github.com/ptrckbrwn"}>ptrckbrwn</a> with <span className={"text-danger"}><i className={"fa fa-heart"}></i></span>.</p>
+      </footer>
     );
   }
 });
