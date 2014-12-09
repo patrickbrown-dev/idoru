@@ -1,4 +1,4 @@
-# Idoru [![Circle CI](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/cooper-rails/badge.png?branch=master)](https://coveralls.io/r/ptrckbrwn/cooper-rails?branch=master)
+# Idoru [![Circle CI](https://circleci.com/gh/ptrckbrwn/idoru/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/idoru/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/idoru/badge.png)](https://coveralls.io/r/ptrckbrwn/idoru)
 
 > Someone seated opposite the camera, beyond a phalanx of green bottles. The
 > darkness and the bandwidth of the tiny camera making the features impossible
