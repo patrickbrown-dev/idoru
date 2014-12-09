@@ -17,6 +17,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'coveralls', require: false
+gem 'capistrano'
+gem 'capistrano-rails'
+gem 'capistrano-rvm'
 
 group :doc do
   gem 'sdoc', '~> 0.4.0'
@@ -29,8 +32,6 @@ group :production do
 end
 
 group :development, :test do
-  gem 'capistrano-rails', '~> 1.1.1'
-  gem 'capistrano-rvm'
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'timecop'
