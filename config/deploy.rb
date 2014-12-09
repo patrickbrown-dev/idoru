@@ -40,21 +40,11 @@ set :rvm_ruby_version, '2.1.3@cooper'    # Defaults to: 'default'
 #set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
 
 namespace :deploy do
-  after :setup do
+  after :restart, :clear_cache do
     on roles(:all) do
       within release_path do
         run "chown -R rails:www-data ."
       end
     end
   end
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      within release_path do
-      #   execute :rake, 'db:migrate:status'
-      end
-    end
-  end
-
 end
