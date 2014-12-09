@@ -7,6 +7,8 @@ class Api::FeedsController < ApplicationController
 
     @feed = Feed.create_and_update(feed)
     redirect_to "/api/articles.json"
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e }, status: 422
   end
 
   private

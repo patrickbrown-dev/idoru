@@ -15,7 +15,12 @@ var Reader = React.createClass({
         articles: result,
         flash: {type: "success", message: "Feeds refreshed. (◡ ‿ ◡ ✿)"}
       });
-    }.bind(this));
+    }.bind(this))
+        .fail(function(result) {
+          this.setState({
+            flash: {type: "danger", message: "Uh-oh! Something went wrong! ლ(ಠ益ಠლ)"}
+          });
+        }.bind(this));
   },
 
   handleChange: function(event) {
@@ -32,7 +37,12 @@ var Reader = React.createClass({
         articles: result,
         flash: {type: "success", message: "Feed added. (◡ ‿ ◡ ✿)"}
       });
-    }.bind(this));
+    }.bind(this))
+        .fail(function(result) {
+          this.setState({
+            flash: {type: "danger", message: "Couldn't parse feed from url. ლ(ಠ益ಠლ)"}
+          });
+        }.bind(this));
   },
 
   componentDidMount: function() {
@@ -129,8 +139,8 @@ var NewFeedButton = React.createClass({
 });
 
 React.render(
-  <Reader articlesUrl="/api/articles.json"
-          refreshUrl="/api/articles/refresh.json"
+  <Reader articlesUrl="/api/articles"
+          refreshUrl="/api/articles/refresh"
           newFeedUrl="/api/feeds" />,
   document.getElementById("app")
 );
