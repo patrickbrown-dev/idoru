@@ -39,12 +39,14 @@ set :rvm_type, :system                   # Defaults to: :auto
 set :rvm_ruby_version, '2.1.3@cooper'    # Defaults to: 'default'
 #set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
 
-namespace :deploy do
-  after :restart, :clear_cache do
+before "deploy:symlink", "custom:chown_dirs"
+
+namespace :custom do
+
+  desc "Chown server directory"
+  task :chown_dirs do
     on roles(:all) do
-      within release_path do
-        run "chown -R rails:www-data ."
-      end
+      execute :chown, "-R rails:www-data /home/rails/idoru"
     end
   end
 end
