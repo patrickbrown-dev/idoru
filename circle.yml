@@ -8,5 +8,4 @@ deployment:
   production:
     branch: master
     commands:
-      - git push git@heroku.com:cooper-rails.git $CIRCLE_SHA1:master
-      - heroku run rake db:migrate --app cooper-rails
+      - ./deploy_prod.sh
