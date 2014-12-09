@@ -1,17 +1,14 @@
-# cooper-rails [![Circle CI](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/cooper-rails/badge.png?branch=master)](https://coveralls.io/r/ptrckbrwn/cooper-rails?branch=master)
-*A Damn Fine RSS Reader™*
+# Idoru [![Circle CI](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/cooper-rails/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/cooper-rails/badge.png?branch=master)](https://coveralls.io/r/ptrckbrwn/cooper-rails?branch=master)
 
-> Diane, 11:31 pm. Just finished washing up and ready for bed. This
-> morning, I showered for nine minutes. Found seventeen hairs; three
-> curly, fourteen straight. I used the Basalm shampoo along with the
-> conditioner courtesy of the hotel and delivering what it promised. A
-> silky manageability. Cotton towel by Field Crest with just the right
-> amount of absorbancy. Consumed fifteen doughnuts today, Diane. All
-> jelly. I'll be injecting my insulin in four minutes. Diane, slept
-> great last night. Got to find out what kind of sheets these are; not
-> cotton, not rayon, silky. Damn fine sheets. I'm gonna get naked and
-> slide around in them. <br/>
-> -- Special Agent Dale Cooper
+> Someone seated opposite the camera, beyond a phalanx of green bottles. The
+> darkness and the bandwidth of the tiny camera making the features impossible
+> to read. Then Rez leaned forward, recognizable in the new depth of focus. He
+> gestured toward the camera with a glass of red wine.<br /><br />
+> "If we could ever once stop talking about the music, and the industry, and
+> all the politics of that, I think I'd probably tell you that it's easier to
+> desire and pursue the attention of tens of millions of total strangers than
+> it is to accept the love and loyalty of the people closest to us."<br /><br />
+> &mdash; William Gibson, <em>Idoru</em>
 
 ## Local Environment Setup
 
@@ -20,8 +17,8 @@
 ```
 brew install postgres
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-createdb cooper_test
-createdb cooper_development
+createdb idoru_test
+createdb idoru_development
 ```
 
 ### Node.js
@@ -34,7 +31,7 @@ brew install node
 
 1. Follow setup guide here: [http://rvm.io/rvm/install][1].
 2. Install ruby 2.1.2 (`rvm install ruby-2.1.2`).
-3. Change to your cooper directory (`cd ~/src/cooper-rails`).
+3. Change to your idoru directory (`cd ~/src/idoru`).
 4. Run `bundle install`.
 
 ### Run migrations
@@ -51,7 +48,7 @@ rails server
 
 ### Create an administrator
 
-1. Navigate to cooper in your browser (`localhost:3000`).
+1. Navigate to idoru in your browser (`localhost:3000`).
 2. Click "Sign Up" and follow instructions.
 3. Open up your rails console (`rails console`).
 4. Find your user (`user = User.where(email: "chelsea.manning@lavabit.com").first`)
