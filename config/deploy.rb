@@ -48,4 +48,12 @@ namespace :deploy do
       end
     end
   end
+
+  after :finished, :restart_unicorn do
+    on roles :all do
+      within release_path do
+        execute "unicorn:restart"
+      end
+    end
+  end
 end
