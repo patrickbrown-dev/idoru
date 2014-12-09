@@ -39,7 +39,7 @@ set :rvm_type, :system                   # Defaults to: :auto
 set :rvm_ruby_version, '2.1.3@cooper'    # Defaults to: 'default'
 #set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
 
-before "deploy:symlink", "custom:chown_dirs"
+after "deploy:updated", "custom:chown_dirs"
 
 namespace :custom do
 
