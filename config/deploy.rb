@@ -35,6 +35,10 @@ set :branch, 'master'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+set :rvm_type, :system                   # Defaults to: :auto
+set :rvm_ruby_version, '2.1.3'           # Defaults to: 'default'
+#set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
+
 namespace :deploy do
 
   after :restart, :clear_cache do
