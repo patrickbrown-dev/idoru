@@ -3,25 +3,17 @@ class Api::ArticlesController < ApplicationController
 
   def index
     @articles = get_articles
-
-    respond_to do |format|
-      format.json { render json: zip_with_feeds(@articles) }
-    end
+    render json: zip_with_feeds(@articles)
   end
 
   def refresh
     @articles = get_articles(true)
-
-    respond_to do |format|
-      format.json { render json: zip_with_feeds(@articles) }
-    end
+    render json: zip_with_feeds(@articles)
   end
 
   def show
     @article = Article.find(params[:id])
-    respond_to do |format|
-      format.json { render json: @article }
-    end
+    render json: @article
   end
 
   private
