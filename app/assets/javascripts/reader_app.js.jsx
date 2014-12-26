@@ -40,7 +40,7 @@ var Reader = React.createClass({
     }.bind(this))
         .fail(function(result) {
           this.setState({
-            flash: {type: "danger", message: "Couldn't parse feed from url. ლ(ಠ益ಠლ)"}
+            flash: {type: "danger", message: "Couldn't parse feed from url or you're already subscribed. ლ(ಠ益ಠლ)"}
           });
         }.bind(this));
   },
@@ -57,7 +57,7 @@ var Reader = React.createClass({
     var newFeedValue = this.state.newFeedValue;
     return (
       <div className={"row"}>
-        <div className={"col-sm-6 col-sm-offset-3"}>
+        <div className={""}>
           <Header />
           {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
       <div className={"input-group"}>

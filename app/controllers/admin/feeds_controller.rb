@@ -9,11 +9,10 @@ class Admin::FeedsController < Admin::BaseAdminController
 
   def new
     @feed = Feed.new
-    @users = User.all.map {|user| [user.email, user.id] }
   end
 
   def create
-    @feed = Feed.create_and_update(feed_params)
+    @feed = Feed.create!(feed_params)
     redirect_to admin_feed_path(@feed), flash: { success: "Feed created" }
   rescue ActiveRecord::RecordInvalid => e
     redirect_to(admin_feeds_path,

@@ -8,7 +8,6 @@
       <th>id</th>
       <th>title</th>
       <th>url</th>
-      <th>user</th>
       <th>updated_at</th>
       <th>actions</th>
     </tr>
@@ -20,7 +19,6 @@
         <td><%= feed.id %></td>
         <td><%= link_to feed.title, admin_feed_path(feed) %></td>
         <td><%= feed.url %></td>
-        <td><%= link_to feed.user.email, admin_user_path(feed.user) %></td>
         <td><%= feed.updated_at %></td>
         <td>
           <%= link_to "edit", edit_admin_feed_path(feed), class: "btn btn-xs btn-default" %>

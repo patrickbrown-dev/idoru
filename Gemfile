@@ -36,10 +36,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'timecop'
-end
-
-group :development do
-  gem 'awesome_print'
+  gem 'awesome_print', require: false
   gem 'pry'
 end
 

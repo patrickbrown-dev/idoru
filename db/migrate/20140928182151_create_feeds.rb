@@ -1,5 +1,5 @@
 class CreateFeeds < ActiveRecord::Migration
-  def up 
+  def up
     Feed.connection.execute(%{
       CREATE TABLE feeds(
         id          serial PRIMARY KEY,

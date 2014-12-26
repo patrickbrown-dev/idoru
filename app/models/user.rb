@@ -3,10 +3,10 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  
+
   # Associations -------------------------------------------------------
 
-  has_many :feeds
+  has_many :feeds, through: :subscriptions
 
   # Instance Methods ---------------------------------------------------
 
