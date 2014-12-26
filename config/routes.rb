@@ -25,5 +25,6 @@ Rails.application.routes.draw do
       end
     end
     resources :articles, only: [:show]
+    resources :subscriptions, except: [:show]
   end
 end

@@ -27,7 +27,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li><%= link_to "Users", admin_users_path %></li>
+            <li><%= link_to "Subscriptions", admin_subscriptions_path %></li>
             <li><%= link_to "Feeds", admin_feeds_path %></li>
+            <li><%= link_to "Articles", admin_users_path %></li>
+            <li><%= link_to "Comments", admin_users_path %></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><p class="navbar-text"><%= current_user.email %></p></li>

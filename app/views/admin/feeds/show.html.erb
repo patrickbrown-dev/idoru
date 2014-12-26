@@ -8,7 +8,6 @@
   <thead>
     <tr>
       <th>id</th>
-      <th>user</th>
       <th>created_at</th>
       <th>updated_at</th>
       <th>purged_at</th>
@@ -18,7 +17,6 @@
   <tbody>
     <tr>
       <td><%= @feed.id %></td>
-      <td><%= link_to @feed.user.email, admin_user_path(@feed.user) %></td>
       <td><%= @feed.created_at %></td>
       <td><%= @feed.updated_at %></td>
       <td><%= @feed.purged_at %></td>
