@@ -6,11 +6,11 @@ class Subscription < ActiveRecord::Base
   validates :feed, :user, presence: true
 
   def self.feeds_for_user(user)
-    Subscription.where(user: user).map{ |sub| sub.feed }
+    Subscription.where(user: user).map { |sub| sub.feed }
   end
 
   def self.users_for_feed(feed)
-    Subscription.where(feed: feed).map{ |sub| sub.user }
+    Subscription.where(feed: feed).map { |sub| sub.user }
   end
 
   def self.subscribe_to_url(user, url)

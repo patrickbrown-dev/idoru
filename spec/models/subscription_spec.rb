@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Subscription, type: :model do
   it { should belong_to :user }
@@ -19,7 +19,7 @@ RSpec.describe Subscription, type: :model do
 
     it "returns all feeds for a user" do
       feeds = Subscription.feeds_for_user(user)
-      expect(feeds).to eq([ feed1, feed2 ])
+      expect(feeds).to eq([feed1, feed2])
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe Subscription, type: :model do
 
     it "returns all feeds for a user" do
       users = Subscription.users_for_feed(feed)
-      expect(users).to eq([ user1, user2 ])
+      expect(users).to eq([user1, user2])
     end
   end
 

@@ -1,5 +1,3 @@
-require "awesome_print"
-
 class Feed < ActiveRecord::Base
   has_many :articles
   has_many :subscriptions
