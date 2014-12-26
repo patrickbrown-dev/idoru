@@ -57,7 +57,7 @@ var Reader = React.createClass({
     var newFeedValue = this.state.newFeedValue;
     return (
       <div className={"row"}>
-        <div className={""}>
+        <div className={"col-sm-6 col-sm-offset-3"}>
           <Header />
           {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
       <div className={"input-group"}>
