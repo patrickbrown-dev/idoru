@@ -16,6 +16,29 @@ RSpec.describe Feed, :type => :model do
   it { should validate_presence_of :url }
   it { should validate_uniqueness_of :url }
 
+  describe ".top" do
+    let(:bot) { Feed.create!(url: "https://xkcd.com/rss.xml") }
+    let(:top) { Feed.create!(url: "http://feeds.feedburner.com/codinghorror") }
+    let(:mid) { Feed.create!(url: "http://thecodelesscode.com/rss") }
+
+    let(:user1) { User.create!(email: "user@one.com", password: "testpass") }
+    let(:user2) { User.create!(email: "user@two.com", password: "testpass") }
+    let(:user3) { User.create!(email: "user@three.com", password: "testpass") }
+
+    before do
+      Subscription.create!(feed: bot, user: user1)
+      Subscription.create!(feed: top, user: user1)
+      Subscription.create!(feed: top, user: user2)
+      Subscription.create!(feed: top, user: user3)
+      Subscription.create!(feed: mid, user: user1)
+      Subscription.create!(feed: mid, user: user2)
+    end
+
+    it "should return the top-most subscribed feeds" do
+      expect(Feed.top).to eq([top, mid, bot])
+    end
+  end
+
   describe "#create_and_update" do
     it "should update_meta after creation" do
       feed = Feed.create!(url: "https://xkcd.com/rss.xml")

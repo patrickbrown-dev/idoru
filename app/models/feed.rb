@@ -8,6 +8,13 @@ class Feed < ActiveRecord::Base
 
   after_create :update_meta, :update_articles
 
+  def self.top(count=25)
+    joins(:subscriptions).
+      group("feeds.id").
+      order("COUNT(subscriptions.id) DESC").
+      limit(count)
+  end
+
   def update_meta
     self.update_attributes!(title: feed.title, updated_at: Time.zone.now)
   end
