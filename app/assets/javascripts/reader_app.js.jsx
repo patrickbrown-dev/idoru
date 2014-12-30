@@ -2,6 +2,7 @@ var Reader = React.createClass({
   getInitialState: function() {
     return {
       articles: [],
+      topFeeds: [],
       flash: {type: "info", message: "(◡ ‿ ◡ ✿)"}
     };
   },
@@ -45,6 +46,10 @@ var Reader = React.createClass({
         }.bind(this));
   },
 
+  addFeedClick: function(event) {
+    console.log(event);
+  },
+
   componentDidMount: function() {
     $.get(this.props.articlesUrl, function(result) {
       if (this.isMounted()) {
@@ -56,9 +61,12 @@ var Reader = React.createClass({
   render: function() {
     var newFeedValue = this.state.newFeedValue;
     return (
+      <div>
+        <Header />
       <div className={"row"}>
-        <div className={"col-sm-6 col-sm-offset-3"}>
-          <Header />
+        <div className={"col-sm-4"}>
+        </div>
+        <div className={"col-sm-8"}>
           {this.state["flash"] ? <Flash flash={this.state["flash"]} /> : ""}
       <div className={"input-group"}>
         <input type={"text"} className={"form-control"} value={newFeedValue} onChange={this.handleChange} />
@@ -71,6 +79,7 @@ var Reader = React.createClass({
           <Footer />
         </div>
       </div>
+      </div>
     );
   }
 });
@@ -81,6 +90,30 @@ var Flash = React.createClass({
       <div className={"alert alert-" + this.props.flash.type}>
         {this.props.flash.message}
       </div>
+    );
+  }
+});
+
+var TopFeeds = React.createClass({
+  render: function() {
+    return (
+      <ul className={"list-group"}>{
+        this.props.feeds.map(function(feed) {
+          return ( <TopFeed feed={feed}  />);
+        })
+      }</ul>
+    );
+  }
+});
+
+var TopFeed = React.createClass({
+  render: function() {
+    return (
+      <li className={"list-group-item"}>{this.props.feed["title"]}
+        <button className={"btn btn-xs btn-primary pull-right"} onClick={this.props.onClick}>
+          <i className={"fa fa-plus"}></i>
+        </button>
+      </li>
     );
   }
 });
@@ -140,7 +173,7 @@ var NewFeedButton = React.createClass({
 var Header = React.createClass({
   render: function() {
     return (
-      <header>
+      <div>
         <div className={"pull-right"}>
           <ul className={"nav nav-pills"}>
             <li role={"presentation"}>
@@ -152,7 +185,7 @@ var Header = React.createClass({
           </ul>
         </div>
         <h1>Idoru</h1>
-      </header>
+      </div>
     );
   }
 });
@@ -171,6 +204,7 @@ var Footer = React.createClass({
 React.render(
   <Reader articlesUrl="/api/articles"
           refreshUrl="/api/articles/refresh"
-          newFeedUrl="/api/feeds" />,
+          newFeedUrl="/api/feeds"
+          topFeedsUrl="/api/feeds/top" />,
   document.getElementById("app")
 );

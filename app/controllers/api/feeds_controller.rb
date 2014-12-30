@@ -8,6 +8,11 @@ class Api::FeedsController < ApplicationController
     render json: { errors: e }, status: 422
   end
 
+  def top
+    @feeds = Feed.top
+    render json: @feeds
+  end
+
   private
 
   def feed_params

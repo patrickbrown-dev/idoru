@@ -6,8 +6,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :feeds do
-      member do
-        get :refresh
+      collection do
+        get :top
       end
     end
     resources :articles, only: [:index, :show] do
