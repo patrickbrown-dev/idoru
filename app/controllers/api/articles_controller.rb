@@ -20,7 +20,7 @@ class Api::ArticlesController < ApplicationController
 
   def get_articles(refresh = false)
     @feeds = Subscription.feeds_for_user(current_user)
-    @feeds.each { |feed| feed.update_articles } if refresh
+    Feed.update_feeds_concurrently(@feeds) if refresh
     Article.where(feed_id: @feeds.map { |f| f.id }).
       order(published_at: :desc).
       limit(25)
