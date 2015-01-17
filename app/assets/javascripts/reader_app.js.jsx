@@ -144,7 +144,7 @@ var Header = React.createClass({
         <div className={"pull-right"}>
           <ul className={"nav nav-pills"}>
             <li role={"presentation"}>
-              <a href="http://cabaltherapy.com">Blog</a>
+              <a href="http://cabaltherapy.com/tag/idoru/">Blog</a>
             </li>
             <li>
               <a data-method="delete" href="/users/sign_out" rel="nofollow">Sign Out</a>
