@@ -54,6 +54,7 @@ class Feed < ActiveRecord::Base
   private
 
   def feed
+    update_feed
     @@feed_memo[id][:feed]
   end
 
