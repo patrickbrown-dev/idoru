@@ -28,7 +28,7 @@ class Feed < ActiveRecord::Base
   end
 
   def update_articles
-    return unless valid?
+    return if @status == :bad
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
       if article.nil?
@@ -46,7 +46,7 @@ class Feed < ActiveRecord::Base
 
   def update_feed
     if should_update?
-      @@feed_memo[id] = { feed: Feedjira::Feed.fetch_and_parse(url),
+      @@feed_memo[id] = { feed: remote_feed,
                           cached_at: Time.zone.now }
     end
   end
@@ -58,9 +58,23 @@ class Feed < ActiveRecord::Base
     @@feed_memo[id][:feed]
   end
 
+  def remote_feed
+    # Feedjira handles bad responses really poorly (sets return to a
+    # Fixnum). If we get a bad response we'll need to ignore the
+    # garbage response until we get a good one.
+    feed = Feedjira::Feed.fetch_and_parse(url)
+    if feed.is_a?(Fixnum)
+      @status = :bad
+    else
+      @status = :ok
+    end
+    feed
+  end
+
   def should_update?
     return true if @@feed_memo[id].nil? ||
-                   @@feed_memo[id][:cached_at] < 30.minutes.ago
+                   @@feed_memo[id][:cached_at] < 30.minutes.ago ||
+                   @status == :bad
     false
   end
 end
