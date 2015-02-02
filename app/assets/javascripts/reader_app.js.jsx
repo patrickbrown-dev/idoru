@@ -2,7 +2,8 @@ var Reader = React.createClass({
   getInitialState: function() {
     return {
       articles: [],
-      flash: {type: "info", message: "(◡ ‿ ◡ ✿)"}
+      flash: {type: "info", message: "(◡ ‿ ◡ ✿)"},
+      page: 1
     };
   },
 
@@ -25,6 +26,13 @@ var Reader = React.createClass({
 
   handleChange: function(event) {
     this.setState({newFeedValue: event.target.value});
+  },
+
+  handlePage: function(event) {
+    var page = parseInt(event.target.value);
+    $.get(this.props.articlesUrl, {page: page}, function(result) {
+      this.setState({ articles: result, page: page });
+    }.bind(this));
   },
 
   newFeedClick: function(event) {
@@ -68,6 +76,7 @@ var Reader = React.createClass({
         </span>
       </div>
       <Articles articles={this.state["articles"]} />
+      <Pagination page={this.state["page"]} onClick={this.handlePage} />
           <Footer />
         </div>
       </div>
@@ -134,6 +143,35 @@ var NewFeedButton = React.createClass({
         <i className={"fa fa-plus"}></i>
       </button>
     );
+  }
+});
+
+var Pagination = React.createClass({
+  render: function() {
+    var page = this.props.page;
+    if (page === 1) {
+      return (
+        <div className={"pager btn-group"}>
+          <button value={page - 1} className={"btn btn-default disabled"} onClick={this.props.onClick}>
+            Previous
+          </button>
+          <button value={page + 1} className={"btn btn-default"} onClick={this.props.onClick}>
+            Next
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div className={"pager btn-group"}>
+          <button value={page - 1} className={"btn btn-default"} onClick={this.props.onClick}>
+            Previous
+          </button>
+          <button value={page + 1} className={"btn btn-default"} onClick={this.props.onClick}>
+            Next
+          </button>
+        </div>
+      );
+    }
   }
 });
 
