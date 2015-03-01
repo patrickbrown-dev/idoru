@@ -2,13 +2,13 @@ class Api::ArticlesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @articles = Article.includes(:feed).order(published_at: :desc).all
+    @articles = get_articles
     paginate json: @articles
   end
 
   def refresh
     @articles = get_articles(true)
-    paginate json: zip_with_feeds(@articles)
+    paginate json: @articles
   end
 
   def show

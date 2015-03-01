@@ -1,1 +1,15 @@
-<div id="app"></div>
+<% @articles.each do |article| %>
+    <h4>
+        <a href="<%= article.url %>">
+            <%= article.title %>
+        </a>
+        <small class="text-muted">
+            <em>&nbsp;<%= article.feed.title %></em>
+        </small>
+        <p><small class="text-muted">
+            <%= article.published_at.strftime("published on %m/%d/%Y") %>
+        </small></p>
+    </h4>
+<% end %>
+
+<%= will_paginate @articles %>
