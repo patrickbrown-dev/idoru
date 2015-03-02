@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   get '/reader', to: 'reader#index'
+  get '/top_subs', to: 'reader#top_subs'
+
+  resources :subscriptions, only: [:index, :create, :destroy]
 
   namespace :api do
     resources :feeds do

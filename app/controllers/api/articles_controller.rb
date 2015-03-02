@@ -3,12 +3,12 @@ class Api::ArticlesController < ApplicationController
 
   def index
     @articles = get_articles
-    render json: zip_with_feeds(@articles)
+    paginate json: @articles
   end
 
   def refresh
     @articles = get_articles(true)
-    render json: zip_with_feeds(@articles)
+    paginate json: @articles
   end
 
   def show
@@ -22,8 +22,7 @@ class Api::ArticlesController < ApplicationController
     @feeds = Subscription.feeds_for_user(current_user)
     Feed.update_feeds_concurrently(@feeds) if refresh
     Article.where(feed_id: @feeds.map { |f| f.id }).
-      order(published_at: :desc).
-      limit(25)
+      order(published_at: :desc)
   end
 
   def zip_with_feeds(articles)
