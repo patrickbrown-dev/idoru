@@ -28,9 +28,8 @@ class Feed < ActiveRecord::Base
   end
 
   def update_articles
-    return if @status == :bad ||
-              @@feed_memo[id].nil? ||
-              @@feed_memo[id][:cached_at] > 90.minutes.ago
+    return if @status == :bad
+    return if updated_at > @@feed_memo[id][:cached_at]
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
       if article.nil?

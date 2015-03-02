@@ -60,6 +60,7 @@ RSpec.describe Feed, :type => :model do
       feed.update_articles
       old_total_articles = Article.all.count
       feed.update_articles
+
       expect(Article.all.count).to eq(old_total_articles)
     end
 
