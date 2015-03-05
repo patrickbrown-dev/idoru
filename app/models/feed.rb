@@ -1,6 +1,8 @@
 require "thread/pool"
 
 class Feed < ActiveRecord::Base
+  attr_reader :status
+
   has_many :articles
   has_many :subscriptions
   has_many :users, through: :subscriptions
@@ -30,6 +32,7 @@ class Feed < ActiveRecord::Base
   end
 
   def update_articles
+    feed # check feed status
     return if @status == :bad
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
@@ -53,25 +56,23 @@ class Feed < ActiveRecord::Base
   private
 
   def feed
-    @feed ||= remote_feed
+    if @status == :bad
+      @feed = remote_feed
+    else
+      @feed ||= remote_feed
+    end
   end
 
   def remote_feed
     # Feedjira handles bad responses really poorly (sets return to a
     # Fixnum). If we get a bad response we'll need to ignore the
     # garbage response until we get a good one.
-    feed = Feedjira::Feed.fetch_and_parse(url)
-    if feed.is_a?(Fixnum)
+    response = Feedjira::Feed.fetch_and_parse(url)
+    if response.is_a?(Fixnum)
       @status = :bad
     else
       @status = :ok
     end
-    feed
-  end
-
-  def should_update?
-    @@feed_memo[id].nil? ||
-      @@feed_memo[id][:cached_at] < 90.minutes.ago ||
-      @status == :bad
+    response
   end
 end

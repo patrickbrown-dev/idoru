@@ -25,7 +25,7 @@ RSpec.describe Feed, :type => :model do
 
     it "creates the correct number of articles" do
       Feed.update_feeds_concurrently [feed]
-      expect(feed.reload.articles.length).to eq(4)
+      expect(feed.reload.articles.count).to_not eq(0)
     end
   end
 
@@ -56,35 +56,50 @@ RSpec.describe Feed, :type => :model do
   end
 
   describe "#update_articles" do
-    it "should save new Article for each entry" do
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: 1.week.ago)
-      feed.update_articles
+    let!(:feed) { Feed.new(title: "xkcd.com",
+                           url: "https://xkcd.com/rss.xml",
+                           updated_at: 1.week.ago) }
 
-      expect(Article.all.count).to_not eq(0)
-      expect(Article.all.count).to_not eq(nil)
+    it "should save new Article for each entry" do
+      feed.update_articles
+      expect(feed.articles.count).to_not eq(0)
     end
 
     it "should update existing Articles if they have same url" do
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: 1.week.ago)
       feed.update_articles
-      old_total_articles = Article.all.count
+      old_total_articles = feed.articles.count
       feed.update_articles
 
-      expect(Article.all.count).to eq(old_total_articles)
+      expect(feed.reload.articles.count).to eq(old_total_articles)
     end
 
     it "should set feed updated_at to now" do
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: 1.week.ago)
       now = Time.zone.now
       Timecop.freeze(now) { feed.update_articles }
 
       expect(feed.updated_at.round).to eq(now.round)
+    end
+
+    describe "when feed is down" do
+      before do
+        allow(Feedjira::Feed).to receive(:fetch_and_parse) { 404 }
+      end
+
+      it "should set status to bad on dead feed" do
+        feed.update_articles
+        expect(feed.status).to eq(:bad)
+      end
+
+      it "should set status to ok when feed is back up" do
+        feed.update_articles # set feed in bad state
+
+        allow(Feedjira::Feed).to receive(:fetch_and_parse) do
+          Feedjira::Feed.parse(rss_xml)
+        end
+        feed.update_articles
+        expect(feed.status).to eq(:ok)
+        expect(feed.articles.count).to_not eq(0)
+      end
     end
   end
 end
