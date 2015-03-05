@@ -9,11 +9,13 @@ class SubscriptionsController < ApplicationController
 
   def create
     @feed = Subscription.subscribe_to_url(current_user, feed_params[:url]).feed
+    @feed.update_feed
+    @feed.update_articles
     redirect_to(subscriptions_path,
                 flash: { success: "Subscription created" })
-  rescue ActiveRecord::RecordInvalid => e
-    redirect_to(admin_feeds_path,
-                flash: { warning: "Error creating subscription: #{e}" })
+  rescue => e
+    redirect_to(subscriptions_path,
+                flash: { danger: "Error creating subscription." })
   end
 
   def destroy
