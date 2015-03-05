@@ -14,6 +14,7 @@ gem 'devise'
 gem 'bugsnag'
 gem 'will_paginate', '~> 3.0.6'
 gem 'bootstrap-will_paginate'
+gem 'dogstatsd-ruby'
 
 gem 'jquery-rails'
 gem 'turbolinks'
