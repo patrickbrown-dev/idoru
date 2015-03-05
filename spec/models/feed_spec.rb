@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Feed, :type => :model do
-  # TODO(ptrckbrwn): close file.
-  let!(:rss_xml) { File.open("spec/fixtures/rss.xml", "rb").read }
+  let(:rss_file) { File.open("spec/fixtures/rss.xml", "rb") }
+  let!(:rss_xml) { rss_file.read }
 
   before do
     allow(Feedjira::Feed).to receive(:fetch_and_parse) do
@@ -10,11 +10,24 @@ RSpec.describe Feed, :type => :model do
     end
   end
 
+  after do
+    rss_file.close
+  end
+
   it { should have_many :articles }
   it { should have_many(:users).through(:subscriptions) }
 
   it { should validate_presence_of :url }
   it { should validate_uniqueness_of :url }
+
+  describe "::update_feeds_concurrently" do
+    let!(:feed) { Feed.create(url: "https://xkcd.com/rss.xml") }
+
+    it "creates the correct number of articles" do
+      Feed.update_feeds_concurrently [feed]
+      expect(feed.reload.articles.length).to eq(4)
+    end
+  end
 
   describe "#create_and_update" do
     it "should update_meta after creation" do

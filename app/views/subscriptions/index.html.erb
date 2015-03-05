@@ -1,5 +1,17 @@
 <div class="row">
     <div class="col-md-6">
+        <h3>New Subscription</h3>
+        <%= form_for @feed, url: {action: :create}, html: {class: "form"} do |f| %>
+            <div class="input-group">
+                <%= f.url_field :url, class: "form-control", placeholder: "https://xkcd.com/rss.xml" %>
+                <span class="input-group-btn">
+                    <%= f.submit "Subscribe", class: "btn btn-success" %>
+                </span>
+            </div>
+        <% end %>
+    </div>
+
+    <div class="col-md-6">
         <h3>Current Subscriptions</h3>
         <% @subscriptions.each do |sub| %>
             <p>
@@ -8,16 +20,6 @@
                     <%= link_to "unsubscribe", subscription_path(sub), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-xs btn-danger" %>
                 </span>
             </p>
-        <% end %>
-    </div>
-
-    <div class="col-md-6">
-        <h3>New Subscription</h3>
-        <%= form_for @feed, url: {action: :create}, html: {class: "form"} do |f| %>
-            <div class="form-group">
-                <%= f.url_field :url, class: "form-control", placeholder: "https://xkcd.com/rss.xml" %>
-            </div>
-            <%= f.submit "Subscribe", class: "btn btn-success" %>
         <% end %>
     </div>
 </div>
