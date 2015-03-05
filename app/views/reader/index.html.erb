@@ -1,15 +1,33 @@
-<% @articles.each do |article| %>
-    <h4>
-        <a href="<%= article.url %>">
-            <%= article.title %>
-        </a>
-        <small class="text-muted">
-            <em>&nbsp;<%= article.feed.title %></em>
-        </small>
-        <p><small class="text-muted">
-            <%= article.published_at.strftime("published on %m/%d/%Y") %>
-        </small></p>
-    </h4>
+<% if @articles.length > 0 %>
+    <% @articles.each do |article| %>
+        <h4>
+            <a href="<%= article.url %>">
+                <%= article.title %>
+            </a>
+            <small class="text-muted">
+                <em>&nbsp;<%= article.feed.title %></em>
+            </small>
+            <p><small class="text-muted">
+                <%= article.published_at.strftime("published on %m/%d/%Y") %>
+            </small></p>
+        </h4>
+    <% end %>
+<% else %>
+    <div class="jumbotron">
+        <h1>Welcome, friend!</h1>
+        <p>
+            To get started you'll want to head over to your
+            <%= link_to "subscriptions", subscriptions_path %>
+            and add a feed or two.
+        </p>
+        <p>
+            RSS/Atom feeds are special urls that look like
+            <code>https://xkcd.com/rss.xml</code> and can be found on websites
+            by looking for a <%= fa_icon("rss-square") %> icon.
+            <strong>Pro-tip:</strong> Sometimes it's orange!
+        </p>
+        <p><a href="http://www.whatisrss.com/" class="btn btn-primary btn-lg">Still confused?</a></p>
+    </div>
 <% end %>
 
 <%= will_paginate @articles %>
