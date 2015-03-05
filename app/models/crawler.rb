@@ -3,8 +3,10 @@ require "statsd"
 class Crawler
   class << self
     def crawl
+      log "Crawl started"
       Feed.update_feeds_concurrently(feeds_to_update)
       log "Crawl finished successfully"
+      dd.increment("crawler.successful_crawls")
     rescue => e
       log "Crawl finished with error: #{e}"
     end
@@ -16,7 +18,6 @@ class Crawler
     end
 
     def log message
-      dd.event("Crawler Event", message)
       Rails.logger.info "#{Time.zone.now} :: #{message}"
     end
 
