@@ -12,15 +12,17 @@ class Feed < ActiveRecord::Base
 
   @@feed_memo = {}
 
-  def self.update_feeds_concurrently(feeds)
-    pool = Thread.pool(24)
-    feeds.each do |feed|
-      pool.process { feed.update_feed }
-    end
-    pool.shutdown
+  class << self
+    def update_feeds_concurrently(feeds)
+      pool = Thread.pool(24)
+      feeds.each do |feed|
+        pool.process { feed.update_from_remote }
+      end
+      pool.shutdown
 
-    # SQL UPDATES still need to be handled sequentially
-    feeds.map(&:update_articles)
+      # SQL UPDATES still need to be handled sequentially
+      feeds.map(&:update_articles)
+    end
   end
 
   def update_meta
@@ -29,7 +31,6 @@ class Feed < ActiveRecord::Base
 
   def update_articles
     return if @status == :bad
-    return if updated_at > @@feed_memo[id][:cached_at]
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
       if article.nil?
@@ -45,18 +46,14 @@ class Feed < ActiveRecord::Base
     end
   end
 
-  def update_feed
-    if should_update?
-      @@feed_memo[id] = { feed: remote_feed,
-                          cached_at: Time.zone.now }
-    end
+  def update_from_remote
+    @feed = remote_feed
   end
 
   private
 
   def feed
-    update_feed
-    @@feed_memo[id][:feed]
+    @feed ||= remote_feed
   end
 
   def remote_feed
