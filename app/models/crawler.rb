@@ -1,3 +1,5 @@
+require "statsd"
+
 class Crawler
   class << self
     def crawl
@@ -15,7 +17,12 @@ class Crawler
     end
 
     def log message
+      dd.event("Crawler Event", message)
       Rails.logger.info "#{Time.zone.now} :: #{message}"
+    end
+
+    def dd
+      @dd ||= Statsd.new('localhost', 8125)
     end
   end
 end
