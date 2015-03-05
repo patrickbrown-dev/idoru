@@ -6,7 +6,6 @@
   <thead>
     <tr>
       <th>id</th>
-      <th>created_at</th>
       <th>user</th>
       <th>feed</th>
       <th>actions</th>
@@ -17,14 +16,15 @@
     <% @subscriptions.each do |sub| %>
       <tr>
         <td><%= sub.id %></td>
-        <td><%= sub.created_at %></td>
         <td><%= sub.user.email %></td>
         <td><%= sub.feed.url %></td>
         <td>
-          <%= link_to "edit", edit_admin_subscription_path(sub), class: "btn btn-xs btn-default" %>
-          <%= link_to 'destroy', admin_subscription_path(sub), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-xs btn-danger" %>
+            <%= link_to fa_icon("edit"), edit_admin_subscription_path(sub), class: "btn btn-xs btn-default" %>
+            <%= link_to fa_icon("times"), admin_subscription_path(sub), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-xs btn-danger" %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @subscriptions %>

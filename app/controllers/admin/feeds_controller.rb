@@ -1,6 +1,9 @@
 class Admin::FeedsController < Admin::BaseAdminController
   def index
-    @feeds = Feed.order(:id).all
+    @feeds = Feed.
+             paginate(page: params[:page], per_page: 20).
+             order(:id).
+             all
   end
 
   def show

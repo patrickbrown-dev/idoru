@@ -1,6 +1,9 @@
 class Admin::SubscriptionsController < Admin::BaseAdminController
   def index
-    @subscriptions = Subscription.order(:id).all
+    @subscriptions = Subscription.
+                     paginate(page: params[:page], per_page: 20).
+                     order(:id).
+                     all
   end
 
   def new
