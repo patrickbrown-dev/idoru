@@ -3,7 +3,6 @@ require "statsd"
 class Crawler
   class << self
     def crawl
-      log "Crawl started"
       Feed.update_feeds_concurrently(feeds_to_update)
       log "Crawl finished successfully"
     rescue => e
