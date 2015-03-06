@@ -4,6 +4,7 @@ class SubscriptionsController < ApplicationController
 
   def index
     @feed = Feed.new
+    @top_feeds = Feed.top_feeds
     @subscriptions = Subscription.where(user: current_user)
   end
 

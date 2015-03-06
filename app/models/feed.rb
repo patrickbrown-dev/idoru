@@ -25,6 +25,14 @@ class Feed < ActiveRecord::Base
       # SQL UPDATES still need to be handled sequentially
       feeds.map(&:update_articles)
     end
+
+    def top_feeds(limit=10)
+      joins(:subscriptions).
+        select("feeds.*", "count(subscriptions.*) as sub_count").
+        group("feeds.id").
+        order("sub_count desc").
+        limit(limit)
+    end
   end
 
   def update_meta

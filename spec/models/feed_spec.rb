@@ -29,6 +29,32 @@ RSpec.describe Feed, :type => :model do
     end
   end
 
+  describe "::top_feeds" do
+    let!(:top_feed) { Feed.create(url: "https://xkcd.com/top") }
+    let!(:mid_feed) { Feed.create(url: "https://xkcd.com/mid") }
+    let!(:bot_feed) { Feed.create(url: "https://xkcd.com/bot") }
+    let!(:not_feed) { Feed.create(url: "https://xkcd.com/not") }
+
+    let!(:user1) { User.create(email: "aaa@aaa.com", password: "testpass") }
+    let!(:user2) { User.create(email: "bbb@bbb.com", password: "testpass") }
+    let!(:user3) { User.create(email: "ccc@ccc.com", password: "testpass") }
+
+    before do
+      Subscription.subscribe_to_url(user1, top_feed.url)
+      Subscription.subscribe_to_url(user2, top_feed.url)
+      Subscription.subscribe_to_url(user3, top_feed.url)
+
+      Subscription.subscribe_to_url(user1, mid_feed.url)
+      Subscription.subscribe_to_url(user2, mid_feed.url)
+
+      Subscription.subscribe_to_url(user1, bot_feed.url)
+    end
+
+    it "returns the top feeds" do
+      expect(Feed.top_feeds.to_a).to eq([top_feed, mid_feed, bot_feed])
+    end
+  end
+
   describe "#create_and_update" do
     it "should update_meta after creation" do
       feed = Feed.create!(url: "https://xkcd.com/rss.xml")
