@@ -1,4 +1,4 @@
-# Idoru [![Circle CI](https://circleci.com/gh/ptrckbrwn/idoru/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/idoru/tree/master) [![Coverage Status](https://coveralls.io/repos/ptrckbrwn/idoru/badge.png)](https://coveralls.io/r/ptrckbrwn/idoru)
+# Idoru [![Circle CI](https://circleci.com/gh/ptrckbrwn/idoru/tree/master.svg?style=svg)](https://circleci.com/gh/ptrckbrwn/idoru/tree/master) [![Code Climate](https://codeclimate.com/github/ptrckbrwn/idoru/badges/gpa.svg)](https://codeclimate.com/github/ptrckbrwn/idoru) [![Test Coverage](https://codeclimate.com/github/ptrckbrwn/idoru/badges/coverage.svg)](https://codeclimate.com/github/ptrckbrwn/idoru)
 
 > Someone seated opposite the camera, beyond a phalanx of green bottles. The
 > darkness and the bandwidth of the tiny camera making the features impossible
