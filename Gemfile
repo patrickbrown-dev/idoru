@@ -41,6 +41,7 @@ group :development, :test do
   gem 'timecop'
   gem 'awesome_print', require: false
   gem 'pry'
+  gem "codeclimate-test-reporter", require: nil
 end
 
 # Use ActiveModel has_secure_password
