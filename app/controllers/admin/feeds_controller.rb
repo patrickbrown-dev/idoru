@@ -46,7 +46,6 @@ class Admin::FeedsController < Admin::BaseAdminController
 
   def refresh
     @feed = Feed.find(params[:id])
-    @feed.update_feed
     @feed.update_articles
     redirect_to(admin_feed_path(@feed),
                 flash: { success: "Feed articles refreshed" })

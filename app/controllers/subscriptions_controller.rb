@@ -4,12 +4,12 @@ class SubscriptionsController < ApplicationController
 
   def index
     @feed = Feed.new
+    @top_feeds = Feed.top_feeds
     @subscriptions = Subscription.where(user: current_user)
   end
 
   def create
     @feed = Subscription.subscribe_to_url(current_user, feed_params[:url]).feed
-    @feed.update_feed
     @feed.update_articles
     redirect_to(subscriptions_path,
                 flash: { success: "Subscription created" })

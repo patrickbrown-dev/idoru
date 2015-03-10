@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Feed, :type => :model do
-  # TODO(ptrckbrwn): close file.
-  let!(:rss_xml) { File.open("spec/fixtures/rss.xml", "rb").read }
+  let(:rss_file) { File.open("spec/fixtures/rss.xml", "rb") }
+  let!(:rss_xml) { rss_file.read }
 
   before do
     allow(Feedjira::Feed).to receive(:fetch_and_parse) do
@@ -10,11 +10,50 @@ RSpec.describe Feed, :type => :model do
     end
   end
 
+  after do
+    rss_file.close
+  end
+
   it { should have_many :articles }
   it { should have_many(:users).through(:subscriptions) }
 
   it { should validate_presence_of :url }
   it { should validate_uniqueness_of :url }
+
+  describe "::update_feeds_concurrently" do
+    let!(:feed) { Feed.create(url: "https://xkcd.com/rss.xml") }
+
+    it "creates the correct number of articles" do
+      Feed.update_feeds_concurrently [feed]
+      expect(feed.reload.articles.count).to_not eq(0)
+    end
+  end
+
+  describe "::top_feeds" do
+    let!(:top_feed) { Feed.create(url: "https://xkcd.com/top") }
+    let!(:mid_feed) { Feed.create(url: "https://xkcd.com/mid") }
+    let!(:bot_feed) { Feed.create(url: "https://xkcd.com/bot") }
+    let!(:not_feed) { Feed.create(url: "https://xkcd.com/not") }
+
+    let!(:user1) { User.create(email: "aaa@aaa.com", password: "testpass") }
+    let!(:user2) { User.create(email: "bbb@bbb.com", password: "testpass") }
+    let!(:user3) { User.create(email: "ccc@ccc.com", password: "testpass") }
+
+    before do
+      Subscription.subscribe_to_url(user1, top_feed.url)
+      Subscription.subscribe_to_url(user2, top_feed.url)
+      Subscription.subscribe_to_url(user3, top_feed.url)
+
+      Subscription.subscribe_to_url(user1, mid_feed.url)
+      Subscription.subscribe_to_url(user2, mid_feed.url)
+
+      Subscription.subscribe_to_url(user1, bot_feed.url)
+    end
+
+    it "returns the top feeds" do
+      expect(Feed.top_feeds.to_a).to eq([top_feed, mid_feed, bot_feed])
+    end
+  end
 
   describe "#create_and_update" do
     it "should update_meta after creation" do
@@ -43,35 +82,50 @@ RSpec.describe Feed, :type => :model do
   end
 
   describe "#update_articles" do
-    it "should save new Article for each entry" do
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: 1.week.ago)
-      feed.update_articles
+    let!(:feed) { Feed.new(title: "xkcd.com",
+                           url: "https://xkcd.com/rss.xml",
+                           updated_at: 1.week.ago) }
 
-      expect(Article.all.count).to_not eq(0)
-      expect(Article.all.count).to_not eq(nil)
+    it "should save new Article for each entry" do
+      feed.update_articles
+      expect(feed.articles.count).to_not eq(0)
     end
 
     it "should update existing Articles if they have same url" do
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: 1.week.ago)
       feed.update_articles
-      old_total_articles = Article.all.count
+      old_total_articles = feed.articles.count
       feed.update_articles
 
-      expect(Article.all.count).to eq(old_total_articles)
+      expect(feed.reload.articles.count).to eq(old_total_articles)
     end
 
     it "should set feed updated_at to now" do
-      feed = Feed.new(title: "xkcd.com",
-                      url: "https://xkcd.com/rss.xml",
-                      updated_at: 1.week.ago)
       now = Time.zone.now
       Timecop.freeze(now) { feed.update_articles }
 
       expect(feed.updated_at.round).to eq(now.round)
+    end
+
+    describe "when feed is down" do
+      before do
+        allow(Feedjira::Feed).to receive(:fetch_and_parse) { 404 }
+      end
+
+      it "should set status to bad on dead feed" do
+        feed.update_articles
+        expect(feed.status).to eq(:bad)
+      end
+
+      it "should set status to ok when feed is back up" do
+        feed.update_articles # set feed in bad state
+
+        allow(Feedjira::Feed).to receive(:fetch_and_parse) do
+          Feedjira::Feed.parse(rss_xml)
+        end
+        feed.update_articles
+        expect(feed.status).to eq(:ok)
+        expect(feed.articles.count).to_not eq(0)
+      end
     end
   end
 end

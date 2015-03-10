@@ -1,6 +1,8 @@
 require "thread/pool"
 
 class Feed < ActiveRecord::Base
+  attr_reader :status
+
   has_many :articles
   has_many :subscriptions
   has_many :users, through: :subscriptions
@@ -12,15 +14,25 @@ class Feed < ActiveRecord::Base
 
   @@feed_memo = {}
 
-  def self.update_feeds_concurrently(feeds)
-    pool = Thread.pool(24)
-    feeds.each do |feed|
-      pool.process { feed.update_feed }
-    end
-    pool.shutdown
+  class << self
+    def update_feeds_concurrently(feeds)
+      pool = Thread.pool(24)
+      feeds.each do |feed|
+        pool.process { feed.update_from_remote }
+      end
+      pool.shutdown
 
-    # SQL UPDATES still need to be handled sequentially
-    feeds.map(&:update_articles)
+      # SQL UPDATES still need to be handled sequentially
+      feeds.map(&:update_articles)
+    end
+
+    def top_feeds(limit=10)
+      joins(:subscriptions).
+        select("feeds.*", "count(subscriptions.*) as sub_count").
+        group("feeds.id").
+        order("sub_count desc").
+        limit(limit)
+    end
   end
 
   def update_meta
@@ -28,8 +40,8 @@ class Feed < ActiveRecord::Base
   end
 
   def update_articles
+    feed # check feed status
     return if @status == :bad
-    return if updated_at > @@feed_memo[id][:cached_at]
     feed.entries.each do |entry|
       article = Article.where(url: entry.url, feed: self).first
       if article.nil?
@@ -45,36 +57,30 @@ class Feed < ActiveRecord::Base
     end
   end
 
-  def update_feed
-    if should_update?
-      @@feed_memo[id] = { feed: remote_feed,
-                          cached_at: Time.zone.now }
-    end
+  def update_from_remote
+    @feed = remote_feed
   end
 
   private
 
   def feed
-    update_feed
-    @@feed_memo[id][:feed]
+    if @status == :bad
+      @feed = remote_feed
+    else
+      @feed ||= remote_feed
+    end
   end
 
   def remote_feed
     # Feedjira handles bad responses really poorly (sets return to a
     # Fixnum). If we get a bad response we'll need to ignore the
     # garbage response until we get a good one.
-    feed = Feedjira::Feed.fetch_and_parse(url)
-    if feed.is_a?(Fixnum)
+    response = Feedjira::Feed.fetch_and_parse(url)
+    if response.is_a?(Fixnum)
       @status = :bad
     else
       @status = :ok
     end
-    feed
-  end
-
-  def should_update?
-    @@feed_memo[id].nil? ||
-      @@feed_memo[id][:cached_at] < 90.minutes.ago ||
-      @status == :bad
+    response
   end
 end
