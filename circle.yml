@@ -6,8 +6,3 @@ test:
     - bundle exec rspec -c -fd:
         environment:
           CODECLIMATE_REPO_TOKEN: 6a6ab33f02cc2c39a56d3480240836dc90851798e5007b916523ba1a4e211d74
-deployment:
-  production:
-    branch: master
-    commands:
-      - bundle exec cap production deploy
